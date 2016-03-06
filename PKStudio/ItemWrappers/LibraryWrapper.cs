@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 namespace PKStudio.ItemWrappers
 {
     [Serializable]
-    public class LibraryWrapper : BaseTypedWrapper<Library>, IName, IGuid, IGroups, IVersion, IProjectPath
+    public class LibraryWrapper : BaseTypedWrapper<Library>, IName, IGuid, IGroups, IVersion, IProjectPath, IDetailDescription, IDescription, IDocumentation, IDependencies
     {
         private LibraryWrapper(Library lib)
             : base(lib)
@@ -441,6 +441,5 @@ namespace PKStudio.ItemWrappers
                     this.InnerObject.Version = null;
             }
         }
-
     }
 }

@@ -4,6 +4,7 @@ using XsdInventoryFormatObject;
 using PKStudio.ItemWrappers.Converters;
 using PKStudio.Tree.Nodes;
 using System.Diagnostics;
+using System.Text;
 
 namespace PKStudio.ItemWrappers
 {
@@ -259,6 +260,52 @@ namespace PKStudio.ItemWrappers
                 {
                     OnPropertyChange("Checked");
                 }
+            }
+        }
+
+        [Browsable(false)]
+        public string BriefDescription
+        {
+            get
+            {
+                BaseWrapper wrapper = this;
+                StringBuilder sb = new StringBuilder();
+                switch (this.ComponentType)
+                {
+                    case ComponentTypeWrapper.Library:
+                        sb.Append("Library\r\n");
+                        wrapper = PK.Wrapper.FindLibrary(this);
+                        break;
+                    case ComponentTypeWrapper.LibraryCategory:
+                        sb.Append("LibraryCategory\r\n");
+                        wrapper = PK.Wrapper.FindLibraryCategory(this.Guid);
+                        break;
+                    case ComponentTypeWrapper.Feature:
+                        sb.Append("Feature\r\n");
+                        wrapper = PK.Wrapper.FindFeature(this.Guid);
+                        break;
+                    case ComponentTypeWrapper.MFAssembly:
+                    case ComponentTypeWrapper.MFSolution:
+                    case ComponentTypeWrapper.Processor:
+                    case ComponentTypeWrapper.OperatingSystem:
+                    case ComponentTypeWrapper.BuildTool:
+                    case ComponentTypeWrapper.ISA:
+                    case ComponentTypeWrapper.BuildParameter:
+                    case ComponentTypeWrapper.Unknown:
+                    default:
+                        sb.AppendFormat("ComponentType       : {0}\r\n", this.ComponentType);
+                    break;
+                }
+                if (wrapper != null)
+                {
+                    sb.AppendFormat("Name              : {0}\r\n", wrapper.InnerName);
+                    sb.AppendFormat("Description       : {0}\r\n", wrapper.InnerDescription);
+                    sb.AppendFormat("Documentation     : {0}\r\n", wrapper.InnerDocumentation);
+                    sb.AppendFormat("Groups            : {0}\r\n", wrapper.InnerGroups);
+                    sb.AppendFormat("Guid              : {0}\r\n", wrapper.InnerGuid);
+                    sb.AppendFormat("ProjectPath       : {0}\r\n", wrapper.InnerProjectPath);
+                }
+                return sb.ToString();
             }
         }
 

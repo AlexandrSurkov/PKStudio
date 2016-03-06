@@ -42,7 +42,7 @@ namespace PKStudio.Helpers
             using (ProjectCollection BuildCollection = new ProjectCollection())
             {
 
-                Project BuildProject = BuildCollection.LoadProject(argument.Path);
+                Project BuildProject = BuildCollection.LoadProject(PK.Wrapper.ExpandEnvVars(argument.Path, ""));
 
                 BuildProject.SetProperty("flavor", argument.BuildType);
                 BuildProject.SetProperty("memory", argument.MediaType);

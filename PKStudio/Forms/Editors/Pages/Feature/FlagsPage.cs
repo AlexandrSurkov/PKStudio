@@ -8,33 +8,26 @@ namespace PKStudio.Forms.Editors.Pages.Feature
             : base(Feat)
         {
             InitializeComponent();
-
+            this.NodeName = Strings.Flags;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Flags;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.Feat.IsSolutionWizardVisible = IsSolutionWizardVisibleCB.Checked;
-            this.Feat.Hidden = HiddenCheckBox.Checked;
-            this.Feat.Required = RequiredCheckBox.Checked;
+            this.Wrapper.IsSolutionWizardVisible = IsSolutionWizardVisibleCB.Checked;
+            this.Wrapper.Hidden = HiddenCheckBox.Checked;
+            this.Wrapper.Required = RequiredCheckBox.Checked;
 
             return true;
         }
 
         protected override void RefreshControl()
         {
-            IsSolutionWizardVisibleCB.Checked = this.Feat.IsSolutionWizardVisible;
-            HiddenCheckBox.Checked = this.Feat.Hidden;
-            RequiredCheckBox.Checked = this.Feat.Required;
+            IsSolutionWizardVisibleCB.Checked = this.Wrapper.IsSolutionWizardVisible;
+            HiddenCheckBox.Checked = this.Wrapper.Hidden;
+            RequiredCheckBox.Checked = this.Wrapper.Required;
         }
 
         #endregion

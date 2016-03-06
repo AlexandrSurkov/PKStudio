@@ -38,42 +38,6 @@ namespace PKStudio.TreeNodes
         public static Type ConvertTypes(ComponentTypeWrapper type)
         {
             Type retval = null;
-            switch (type)
-            {
-                case ComponentTypeWrapper.Library:
-                    retval = typeof(MFLibraryTreeNode);
-                    break;
-                case ComponentTypeWrapper.Feature:
-                    retval = typeof(MFFeatureTreeNode);
-                    break;
-                case ComponentTypeWrapper.MFAssembly:
-                    retval = typeof(MFAssemblyTreeNode);
-                    break;
-                case ComponentTypeWrapper.MFSolution:
-                    retval = typeof(MFSolutionTreeNode);
-                    break;
-                case ComponentTypeWrapper.Processor:
-                    retval = typeof(MFProcessorTreeNode);
-                    break;
-                case ComponentTypeWrapper.OperatingSystem:
-                    retval = typeof(MFOperatingSystemTreeNode);
-                    break;
-                case ComponentTypeWrapper.BuildTool:
-                    retval = typeof(MFBuildToolTreeNode);
-                    break;
-                case ComponentTypeWrapper.ISA:
-                    retval = typeof(MFISATreeNode);
-                    break;
-                case ComponentTypeWrapper.BuildParameter:
-                    retval = typeof(MFBuildParameterTreeNode);
-                    break;
-                case ComponentTypeWrapper.LibraryCategory:
-                    retval = typeof(MFLibCatTreeNode);
-                    break;
-                case ComponentTypeWrapper.Unknown:
-                    retval = typeof(MFUnknownTreeNode);
-                    break;
-            }
             return retval;
         }
 

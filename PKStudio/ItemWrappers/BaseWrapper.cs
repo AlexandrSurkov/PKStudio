@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using PKStudio.Tree.Nodes;
 using System.Collections.ObjectModel;
+using XsdInventoryFormatObject;
 
 namespace PKStudio.ItemWrappers
 {
@@ -239,6 +240,112 @@ namespace PKStudio.ItemWrappers
             }
         }
 
+        [Browsable(false)]
+        public virtual string DetailDescription
+        {
+            get
+            {
+                IDetailDescription detaildescription = this as IDetailDescription;
+                if (detaildescription != null)
+                {
+                    return detaildescription.DetailDescription;
+                }
+                else
+                    return string.Empty;
+            }
+        }
+
+        [Browsable(false)]
+        public virtual string InnerDescription
+        {
+            get
+            {
+                IDescription description = this as IDescription;
+                if (description != null)
+                {
+                    return description.Description;
+                }
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                IDescription description = this as IDescription;
+                if (description != null)
+                {
+                    description.Description = value;
+                }
+            }
+        }
+
+        [Browsable(false)]
+        public virtual string InnerDocumentation
+        {
+            get
+            {
+                IDocumentation documentation = this as IDocumentation;
+                if (documentation != null)
+                {
+                    return documentation.Documentation;
+                }
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                IDocumentation documentation = this as IDocumentation;
+                if (documentation != null)
+                {
+                    documentation.Documentation = value;
+                }
+            }
+        }
+
+        [Browsable(false)]
+        public virtual CollectionWrapper<ComponentWrapper, MFComponent> InnerDependencies
+        {
+            get
+            {
+                IDependencies documentation = this as IDependencies;
+                if (documentation != null)
+                {
+                    return documentation.Dependencies;
+                }
+                else
+                    return new CollectionWrapper<ComponentWrapper,MFComponent>(new List<ComponentWrapper>());
+            }
+            set
+            {
+                IDependencies documentation = this as IDependencies;
+                if (documentation != null)
+                {
+                    documentation.Dependencies = value;
+                }
+            }
+        }
+
+        [Browsable(false)]
+        public virtual string InnerFilter
+        {
+            get
+            {
+                IFilter filter = this as IFilter;
+                if (filter != null)
+                {
+                    return filter.Filter;
+                }
+                else
+                    return string.Empty;
+            }
+            set
+            {
+                IFilter filter = this as IFilter;
+                if (filter != null)
+                {
+                    filter.Filter = value;
+                }
+            }
+        }
 
         [Browsable(false)]
         public abstract string ClassName { get; }
@@ -315,6 +422,7 @@ namespace PKStudio.ItemWrappers
                 return this.innerObjectName;
             }
         }
+
     }
 
     public interface IChecked
@@ -352,4 +460,28 @@ namespace PKStudio.ItemWrappers
         string ProjectPath { get; set; }
     }
 
+    public interface IDetailDescription
+    {
+        string DetailDescription { get; }
+    }
+
+    public interface IDescription
+    {
+        string Description { get; set; }
+    }
+
+    public interface IDocumentation
+    {
+        string Documentation { get; set; }
+    }
+
+    public interface IDependencies
+    {
+        CollectionWrapper<ComponentWrapper, MFComponent> Dependencies { get; set; }
+    }
+
+    public interface IFilter
+    {
+        string Filter { get; set; }
+    }
 }

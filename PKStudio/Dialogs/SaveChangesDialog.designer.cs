@@ -35,40 +35,40 @@
             this.Cancelbtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
             // Yesbtn
             // 
+            this.Yesbtn.DialogResult = System.Windows.Forms.DialogResult.Yes;
             this.Yesbtn.Location = new System.Drawing.Point(205, 267);
             this.Yesbtn.Name = "Yesbtn";
             this.Yesbtn.Size = new System.Drawing.Size(75, 23);
             this.Yesbtn.TabIndex = 1;
             this.Yesbtn.Text = "Yes";
             this.Yesbtn.UseVisualStyleBackColor = true;
-            this.Yesbtn.Click += new System.EventHandler(this.Yesbtn_Click);
             // 
             // NoBtn
             // 
+            this.NoBtn.DialogResult = System.Windows.Forms.DialogResult.No;
             this.NoBtn.Location = new System.Drawing.Point(286, 267);
             this.NoBtn.Name = "NoBtn";
             this.NoBtn.Size = new System.Drawing.Size(75, 23);
             this.NoBtn.TabIndex = 2;
             this.NoBtn.Text = "No";
             this.NoBtn.UseVisualStyleBackColor = true;
-            this.NoBtn.Click += new System.EventHandler(this.NoBtn_Click);
             // 
             // Cancelbtn
             // 
+            this.Cancelbtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancelbtn.Location = new System.Drawing.Point(367, 267);
             this.Cancelbtn.Name = "Cancelbtn";
             this.Cancelbtn.Size = new System.Drawing.Size(75, 23);
             this.Cancelbtn.TabIndex = 3;
             this.Cancelbtn.Text = "Cancel";
             this.Cancelbtn.UseVisualStyleBackColor = true;
-            this.Cancelbtn.Click += new System.EventHandler(this.Cancelbtn_Click);
             // 
             // label1
             // 
@@ -96,6 +96,14 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 100;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Width = 320;
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -116,14 +124,6 @@
             this.imageList1.Images.SetKeyName(13, "text_code_cplusplus.png");
             this.imageList1.Images.SetKeyName(14, "text_code_csharp.png");
             this.imageList1.Images.SetKeyName(15, "document_plain.png");
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 100;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Width = 320;
             // 
             // SaveChangesDialog
             // 

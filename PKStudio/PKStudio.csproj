@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,11 +10,15 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PKStudio</RootNamespace>
     <AssemblyName>PKStudio</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,12 +33,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'RTM|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)' == 'RTM'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\..\..\..\tools\bin\PKStudio\</OutputPath>
     <DefineConstants>,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
@@ -52,30 +52,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RTM|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\RTM\</OutputPath>
-    <DefineConstants>,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
-    <Optimize>true</Optimize>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>,1668,1668,1762</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>,1668,1762</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <PropertyGroup>
@@ -280,6 +259,66 @@
     <Compile Include="Forms\BaseForms\PKStudioBaseDockingForm.designer.cs">
       <DependentUpon>PKStudioBaseDockingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.Designer.cs">
+      <DependentUpon>ComponentDependenciesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.Designer.cs">
+      <DependentUpon>FeatureDependenciesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.Designer.cs">
+      <DependentUpon>FeatureAssociationsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\LibraryCategory\StubLibraryPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\LibraryCategory\StubLibraryPage.Designer.cs">
+      <DependentUpon>StubLibraryPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\ISASpecificPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\ISASpecificPage.Designer.cs">
+      <DependentUpon>ISASpecificPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\LibraryCategoryPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\LibraryCategoryPage.Designer.cs">
+      <DependentUpon>LibraryCategoryPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\LibraryDependenciesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\LibraryDependenciesPage.Designer.cs">
+      <DependentUpon>LibraryDependenciesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\ProcessorSpecificPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\Library\ProcessorSpecificPage.Designer.cs">
+      <DependentUpon>ProcessorSpecificPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\PageBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\PageBase.Designer.cs">
+      <DependentUpon>PageBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\PropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Pages\PropertyPage.Designer.cs">
+      <DependentUpon>PropertyPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Explorers\AssembliesExplorer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -317,35 +356,11 @@
     <Compile Include="Forms\Editors\LibraryEditor.designer.cs">
       <DependentUpon>LibraryEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.cs">
+    <Compile Include="Forms\Editors\Pages\DocumentationPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.Designer.cs">
-      <DependentUpon>ComponentDependenciesPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.Designer.cs">
-      <DependentUpon>FeatureDependenciesPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\DescriptionPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\DescriptionPage.Designer.cs">
-      <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\DocumentationPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\DocumentationPage.Designer.cs">
+    <Compile Include="Forms\Editors\Pages\DocumentationPage.Designer.cs">
       <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\FeaturePageBase.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Feature\FeaturePageBase.Designer.cs">
-      <DependentUpon>FeaturePageBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Pages\Feature\FilterPage.cs">
       <SubType>UserControl</SubType>
@@ -365,35 +380,17 @@
     <Compile Include="Forms\Editors\Pages\Feature\MainPage.Designer.cs">
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\DescriptionPage.cs">
+    <Compile Include="Forms\Editors\Pages\DescriptionPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\DescriptionPage.Designer.cs">
+    <Compile Include="Forms\Editors\Pages\DescriptionPage.Designer.cs">
       <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\DocumentationPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\DocumentationPage.Designer.cs">
-      <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.Designer.cs">
-      <DependentUpon>FeatureAssociationsPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Pages\LibraryCategory\FlagsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Editors\Pages\LibraryCategory\FlagsPage.Designer.cs">
       <DependentUpon>FlagsPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\LibraryCategoryPageBase.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\LibraryCategoryPageBase.Designer.cs">
-      <DependentUpon>LibraryCategoryPageBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Pages\LibraryCategory\LibraryProjCachePage.cs">
       <SubType>UserControl</SubType>
@@ -407,65 +404,23 @@
     <Compile Include="Forms\Editors\Pages\LibraryCategory\MainPage.Designer.cs">
       <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\StubLibraryPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\LibraryCategory\StubLibraryPage.Designer.cs">
-      <DependentUpon>StubLibraryPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Editors\Pages\LibraryCategory\TemplatesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Editors\Pages\LibraryCategory\TemplatesPage.Designer.cs">
       <DependentUpon>TemplatesPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DependenciesPage.cs">
+    <Compile Include="Forms\Editors\Pages\DependenciesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DependenciesPage.Designer.cs">
+    <Compile Include="Forms\Editors\Pages\DependenciesPage.Designer.cs">
       <DependentUpon>DependenciesPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DescriptionPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DescriptionPage.Designer.cs">
-      <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DocumentationPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\DocumentationPage.Designer.cs">
-      <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\LibraryCategoryPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\LibraryCategoryPage.Designer.cs">
-      <DependentUpon>LibraryCategoryPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\LibraryPageBase.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\LibraryPageBase.Designer.cs">
-      <DependentUpon>LibraryPageBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Pages\Library\MainPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Editors\Pages\Library\MainPage.Designer.cs">
       <DependentUpon>MainPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\ISASpecificPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\ISASpecificPage.Designer.cs">
-      <DependentUpon>ISASpecificPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\ProcessorSpecificPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Editors\Pages\Library\ProcessorSpecificPage.Designer.cs">
-      <DependentUpon>ProcessorSpecificPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\SourceFileEditor.cs">
       <SubType>Form</SubType>
@@ -706,15 +661,6 @@
     <Compile Include="Tools\uVisionGenerator\Wizard\Pages\SummaryPage.Designer.cs">
       <DependentUpon>SummaryPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="TreeNodes\AssemblyTreeNode.cs" />
-    <Compile Include="TreeNodes\BuildParameterTreeNode.cs" />
-    <Compile Include="TreeNodes\BuildToolTreeNode.cs" />
-    <Compile Include="TreeNodes\ComponentsTreeNode.cs" />
-    <Compile Include="TreeNodes\DirectoryTreeNode.cs" />
-    <Compile Include="TreeNodes\FeatureTreeNode.cs" />
-    <Compile Include="TreeNodes\ISATreeNode.cs" />
-    <Compile Include="TreeNodes\LibCatTreeNode.cs" />
-    <Compile Include="TreeNodes\LibraryTreeNode.cs" />
     <Compile Include="Helpers\ListViewItemBase.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MainForm.cs">
@@ -737,11 +683,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="TreeNodes\OperatingSystemTreeNode.cs" />
-    <Compile Include="TreeNodes\ProcessorTreeNode.cs" />
-    <Compile Include="TreeNodes\ProjectTreeNode.cs" />
-    <Compile Include="TreeNodes\RootTreeNode.cs" />
-    <Compile Include="TreeNodes\SolutionTreeNode.cs" />
     <Compile Include="TreeNodes\SourceFileTreeNode.cs" />
     <Compile Include="TreeNodes\TreeNodeBase.cs" />
     <Compile Include="Tools\uVisionGenerator\Wizard\uVisionProjectGeneratorWizard.cs">
@@ -750,7 +691,6 @@
     <Compile Include="Tools\uVisionGenerator\Wizard\uVisionProjectGeneratorWizard.Designer.cs">
       <DependentUpon>uVisionProjectGeneratorWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="TreeNodes\UnknownTreeNode.cs" />
     <Compile Include="Tree\InventoryBrowserModel.cs" />
     <Compile Include="Tree\InventoryTree.cs">
       <SubType>UserControl</SubType>
@@ -856,6 +796,24 @@
     <EmbeddedResource Include="Forms\BaseForms\PKStudioBaseDockingForm.resx">
       <DependentUpon>PKStudioBaseDockingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.resx">
+      <DependentUpon>ComponentDependenciesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.resx">
+      <DependentUpon>FeatureDependenciesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.resx">
+      <DependentUpon>FeatureAssociationsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\Library\LibraryDependenciesPage.resx">
+      <DependentUpon>LibraryDependenciesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\PageBase.resx">
+      <DependentUpon>PageBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Pages\PropertyPage.resx">
+      <DependentUpon>PropertyPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Explorers\AssembliesExplorer.resx">
       <DependentUpon>AssembliesExplorer.cs</DependentUpon>
     </EmbeddedResource>
@@ -874,20 +832,8 @@
     <EmbeddedResource Include="Forms\Editors\LibraryEditor.resx">
       <DependentUpon>LibraryEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Feature\ComponentDependenciesPage.resx">
-      <DependentUpon>ComponentDependenciesPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Feature\FeatureDependenciesPage.resx">
-      <DependentUpon>FeatureDependenciesPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Feature\DescriptionPage.resx">
-      <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Feature\DocumentationPage.resx">
+    <EmbeddedResource Include="Forms\Editors\Pages\DocumentationPage.resx">
       <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Feature\FeaturePageBase.resx">
-      <DependentUpon>FeaturePageBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Pages\Feature\FilterPage.resx">
       <DependentUpon>FilterPage.cs</DependentUpon>
@@ -898,20 +844,11 @@
     <EmbeddedResource Include="Forms\Editors\Pages\Feature\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\DescriptionPage.resx">
+    <EmbeddedResource Include="Forms\Editors\Pages\DescriptionPage.resx">
       <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\DocumentationPage.resx">
-      <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\FeatureAssociationsPage.resx">
-      <DependentUpon>FeatureAssociationsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\FlagsPage.resx">
       <DependentUpon>FlagsPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\LibraryCategoryPageBase.resx">
-      <DependentUpon>LibraryCategoryPageBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\LibraryProjCachePage.resx">
       <DependentUpon>LibraryProjCachePage.cs</DependentUpon>
@@ -919,35 +856,14 @@
     <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\StubLibraryPage.resx">
-      <DependentUpon>StubLibraryPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Pages\LibraryCategory\TemplatesPage.resx">
       <DependentUpon>TemplatesPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\DependenciesPage.resx">
+    <EmbeddedResource Include="Forms\Editors\Pages\DependenciesPage.resx">
       <DependentUpon>DependenciesPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\DescriptionPage.resx">
-      <DependentUpon>DescriptionPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\DocumentationPage.resx">
-      <DependentUpon>DocumentationPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\LibraryCategoryPage.resx">
-      <DependentUpon>LibraryCategoryPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\LibraryPageBase.resx">
-      <DependentUpon>LibraryPageBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Pages\Library\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\ISASpecificPage.resx">
-      <DependentUpon>ISASpecificPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Pages\Library\ProcessorSpecificPage.resx">
-      <DependentUpon>ProcessorSpecificPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\SourceFileEditor.resx">
       <DependentUpon>SourceFileEditor.cs</DependentUpon>
@@ -1024,6 +940,7 @@
     <EmbeddedResource Include="Tools\uVisionGenerator\Wizard\KeilWizardStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>KeilWizardStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\uVisionGenerator\Wizard\Pages\BasePage.resx">
       <DependentUpon>BasePage.cs</DependentUpon>
@@ -1201,6 +1118,15 @@
     <Content Include="icon license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SciLexer.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\uVisionGenerator\Processors\LM3S9B96.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Tools\uVisionGenerator\Processors\LM3S9D96.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Tools\uVisionGenerator\Processors\MC9328MX21.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1370,12 +1296,10 @@
     <None Include="Resources\package_new.png" />
     <None Include="Resources\folder1.png" />
     <None Include="Resources\ComponrntReference.png" />
-    <Content Include="SciLexer.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ScintillaNET.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Resources\LibraryComponent.png" />
+    <None Include="Resources\component_link.png" />
+    <None Include="Resources\component_yellow_link.png" />
+    <None Include="Resources\component_green_link.png" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

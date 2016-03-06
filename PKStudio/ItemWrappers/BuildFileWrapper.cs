@@ -13,6 +13,23 @@ namespace PKStudio.ItemWrappers
         {
 
         }
+        public static BuildFileWrapper GetWrapper(string Path)
+        {
+            return GetWrapper(Path, string.Empty, string.Empty);
+        }
+        public static BuildFileWrapper GetWrapper(string Path, string Name)
+        {
+            return GetWrapper(Path, Name, string.Empty);
+        }
+        public static BuildFileWrapper GetWrapper(string Path, string Name, string Condition)
+        {
+            MFBuildFile buildFile = new MFBuildFile();
+            buildFile.File = Path;
+            buildFile.ItemName = Name;
+            buildFile.Condition = Condition;
+            return BaseWrapper.Wrap<BuildFileWrapper>(buildFile);
+        }
+
 
         [Browsable(false)]
         public string Name

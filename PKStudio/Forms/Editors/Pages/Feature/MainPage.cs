@@ -24,24 +24,17 @@ namespace PKStudio.Forms.Editors.Pages.Feature
                     GroupsCb.Items.Add(feat.Groups);
                 }
             }
-
+            this.NodeName = Strings.Main;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Main;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.Feat.Name = NameTb.Text;
+            this.Wrapper.Name = NameTb.Text;
 
-            this.Feat.Groups = GroupsCb.Text;
+            this.Wrapper.Groups = GroupsCb.Text;
 
             return true;
         }
@@ -49,9 +42,9 @@ namespace PKStudio.Forms.Editors.Pages.Feature
         protected override void RefreshControl()
         {
 
-            NameTb.Text = Feat.Name;
+            NameTb.Text = Wrapper.Name;
 
-            if (GroupsCb.Items.Contains(Feat.Groups)) GroupsCb.SelectedItem = Feat.Groups;
+            if (GroupsCb.Items.Contains(Wrapper.Groups)) GroupsCb.SelectedItem = Wrapper.Groups;
             else
             {
                 if (GroupsCb.Items.Count > 0) GroupsCb.SelectedIndex = 0;

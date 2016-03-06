@@ -259,13 +259,19 @@
   <data name="IDS_TREE_MENU_ITEM_OPEN_FOLDER" xml:space="preserve">
     <value>Open Containing Folder</value>
   </data>
-  <data name="LibraryComponent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ComponrntReference.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="IDS_TREE_MENU_ITEM_BUILD" xml:space="preserve">
     <value>Build</value>
   </data>
   <data name="IDS_TREE_MENU_ITEM_REBUILD" xml:space="preserve">
     <value>Rebuild</value>
+  </data>
+  <data name="FeatureComponent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\component_yellow_link.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LibraryCategoryComponent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\component_green_link.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LibraryComponent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\component_link.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

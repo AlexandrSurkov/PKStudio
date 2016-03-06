@@ -2,6 +2,7 @@
 using ComponentObjectModel;
 using XsdInventoryFormatObject;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace PKStudio.ItemWrappers
 {
@@ -32,7 +33,7 @@ namespace PKStudio.ItemWrappers
         {
             get
             {
-                return BaseWrapper.Wrap < InventoryWrapper >(this.InnerObject.DefaultInventory);
+                return BaseWrapper.Wrap<InventoryWrapper>(this.InnerObject.DefaultInventory);
             }
         }
         public LibraryCategoryWrapper[] LibraryCategories
@@ -105,6 +106,24 @@ namespace PKStudio.ItemWrappers
         public AssemblyWrapper FindAssemblyByName(string asmName)
         {
             return BaseWrapper.Wrap<AssemblyWrapper>(this.InnerObject.FindAssemblyByName(asmName));
+        }
+
+        public BuildToolWrapper_ FindBuildTool(string buildToolGuid)
+        {
+            return BaseWrapper.Wrap<BuildToolWrapper_>(this.InnerObject.FindBuildTool(buildToolGuid));
+        }
+        public BuildToolWrapper_ FindBuildToolByName(string buildToolName)
+        {
+            //FindBuildToolByName is not dupported :(
+            //return BaseWrapper.Wrap<BuildToolWrapper_>(this.InnerObject.FindBuildToolByName(buildToolName));
+            foreach (Inventory inventory in this.InnerObject.Inventories)
+            {
+                foreach (BuildTool buildTool in inventory.BuildTools)
+                {
+                    if (buildTool.Name.Equals(buildToolName.ToUpper(CultureInfo.InvariantCulture))) return BaseWrapper.Wrap<BuildToolWrapper_>(buildTool);
+                }
+            }
+            return BaseWrapper.Wrap<BuildToolWrapper_>(null);
         }
 
         public FeatureWrapper FindFeature(string featureGuid)

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using PKStudio.ItemWrappers;
 
 namespace PKStudio.Dialogs
 {
@@ -18,6 +19,53 @@ namespace PKStudio.Dialogs
 
         void PKWrapper_LoadInventoryAsyncCompleteEvent(object sender, EventArgs e)
         {
+            string buildToolName = Environment.GetEnvironmentVariable("COMPILER_TOOL");
+            if (!string.IsNullOrEmpty(buildToolName))
+            {
+                BuildToolWrapper_ buildTool = PK.Wrapper.FindBuildToolByName(buildToolName.ToLowerInvariant());
+                if (buildTool != null)
+                {
+                    foreach (PropertyWrapper property in buildTool.Properties)
+                    {
+                        if (property.Name == "SCATTER_EXT")
+                        {
+                            Environment.SetEnvironmentVariable("SCATTER_EXT", property.Value);
+                        }
+                        if (property.Name == "OBJ_EXT")
+                        {
+                            Environment.SetEnvironmentVariable("OBJ_EXT", property.Value);
+                        }
+                        if (property.Name == "EXE_EXT")
+                        {
+                            Environment.SetEnvironmentVariable("EXE_EXT", property.Value);
+                        }
+                        if (property.Name == "LIB_EXT")
+                        {
+                            Environment.SetEnvironmentVariable("LIB_EXT", property.Value);
+                        }
+                        //if (property.Name == "AssemblyName")
+                        //{
+                        //    Environment.SetEnvironmentVariable("AssemblyName", property.Value);
+                        //}
+                        //if (property.Name == "MSBuildProjectName")
+                        //{
+                        //    Environment.SetEnvironmentVariable("MSBuildProjectName", property.Value);
+                        //}
+                    }
+                    //Environment.SetEnvironmentVariable("SCATTER_EXT", buildTool.Properties.);
+                    //Environment.SetEnvironmentVariable("OBJ_EXT", buildTool.ObjExt);
+                    //Environment.SetEnvironmentVariable("EXE_EXT", buildTool.BinExt);
+                    //Environment.SetEnvironmentVariable("LIB_EXT", buildTool.LibExt);
+                }
+                //else
+                //{
+                //    //Set default values
+                //    Environment.SetEnvironmentVariable("SCATTER_EXT", "xml");
+                //    Environment.SetEnvironmentVariable("OBJ_EXT", "obj");
+                //    Environment.SetEnvironmentVariable("EXE_EXT", "exe");
+                //    Environment.SetEnvironmentVariable("LIB_EXT", "lib");
+                //}
+            }
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }
@@ -62,7 +110,7 @@ namespace PKStudio.Dialogs
             {
                 Environment.SetEnvironmentVariable("SRC_DIR", "");
             }
-            
+
             //if (string.IsNullOrEmpty(portingKitRegistryValue) || !Directory.Exists(portingKitRegistryValue))
             //{
             //    portingKitRegistryValue = Helper.GetPortingKitRegistryValue("", "InstallRoot");    
@@ -92,7 +140,7 @@ namespace PKStudio.Dialogs
             //                this.DialogResult = System.Windows.Forms.DialogResult.Abort;
             //                this.Close();
             //            }
-                        
+
             //        }
             //    }
             //}

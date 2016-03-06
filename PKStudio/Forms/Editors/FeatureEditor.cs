@@ -38,39 +38,25 @@ namespace PKStudio.Forms.Editors
             this.Pages.Clear();
 
             this.Pages.Add(new Editors.Pages.Feature.MainPage(Feat));
-            this.Pages.Add(new Editors.Pages.Feature.DescriptionPage(Feat));
-            this.Pages.Add(new Editors.Pages.Feature.DocumentationPage(Feat));
+            this.Pages.Add(new Editors.Pages.DescriptionPage(Feat));
+            this.Pages.Add(new Editors.Pages.DocumentationPage(Feat));
             this.Pages.Add(new Editors.Pages.Feature.FilterPage(Feat));
             this.Pages.Add(new Editors.Pages.Feature.FlagsPage(Feat));
             this.Pages.Add(new Editors.Pages.Feature.ComponentDependenciesPage(Feat));
             this.Pages.Add(new Editors.Pages.Feature.FeatureDependenciesPage(Feat));
 
-            //this.Pages.Add(new Editors.Pages.Library.ProcessorSpecificPage(Lib));
-            foreach (EditorPageBase page in this.Pages)
-            {
-                IEventComponent icomp = page as IEventComponent;
-                if (icomp != null)
-                {
-                    icomp.SelectionChangedEvent += new EventHandler<ObjectEventArgs>(icomp_SelectionChangedEvent);
-                }
-            }
 
            this.Initialize();
 
             SetModified(false);
         }
 
-        void icomp_SelectionChangedEvent(object sender, ObjectEventArgs e)
-        {
-            OnSelectionChangeEvent(e.Object);
-        }
-
-        
-        public override EditedComponentDescription EditedItemDesc
+       
+        public override BaseWrapper  EditComponent
         {
             get
             {
-                return new EditedComponentDescription() { Type = EditedComponentDescription.ComponentType.Feature, Name = Feat.Name };
+                return this.Feature;
             }
         }
 

@@ -35,11 +35,11 @@
             this.CancelBtn = new System.Windows.Forms.Button();
             this.OkBtn = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.DescriptionRTB = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.TypeCb = new System.Windows.Forms.ComboBox();
+            this._treeView = new PKStudio.Tree.InventoryTree();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -113,7 +113,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            this.splitContainer1.Panel1.Controls.Add(this._treeView);
             // 
             // splitContainer1.Panel2
             // 
@@ -121,19 +121,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(708, 404);
             this.splitContainer1.SplitterDistance = 235;
             this.splitContainer1.TabIndex = 2;
-            // 
-            // treeView1
-            // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.ImageIndex = 0;
-            this.treeView1.ImageList = this.imageList1;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(235, 404);
-            this.treeView1.TabIndex = 0;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
             // 
             // imageList1
             // 
@@ -188,6 +175,18 @@
             this.TypeCb.TabIndex = 0;
             this.TypeCb.SelectedIndexChanged += new System.EventHandler(this.TypeCb_SelectedIndexChanged);
             // 
+            // _treeView
+            // 
+            this._treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._treeView.LoadOnDemand = false;
+            this._treeView.Location = new System.Drawing.Point(0, 0);
+            this._treeView.Name = "_treeView";
+            this._treeView.ShowLines = false;
+            this._treeView.ShowPlusMinus = false;
+            this._treeView.Size = new System.Drawing.Size(235, 404);
+            this._treeView.TabIndex = 2;
+            this._treeView.TreeSelectedNode = null;
+            // 
             // SelectComponentDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -221,7 +220,7 @@
         private System.Windows.Forms.RichTextBox DescriptionRTB;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.ComboBox TypeCb;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ImageList imageList1;
+        private Tree.InventoryTree _treeView;
     }
 }

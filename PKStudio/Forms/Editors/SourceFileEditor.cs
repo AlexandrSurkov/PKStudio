@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using PKStudio.ItemWrappers;
 namespace PKStudio.Forms.Editors
 {
     public partial class SourceFileEditor : PKStudio.Forms.BaseForms.EditorBaseForm
@@ -67,6 +68,10 @@ namespace PKStudio.Forms.Editors
                     case ".s":
                         scintilla1.ConfigurationManager.Language = "asm";
                         break;
+                    case ".proj":
+                    case ".xml":
+                        scintilla1.ConfigurationManager.Language = "xml";
+                        break;
                     default:
                         break;
                 }
@@ -100,11 +105,11 @@ namespace PKStudio.Forms.Editors
         public string EditingFilePath { get { return this._editingFilePath; } }
 
 
-        public override EditedComponentDescription EditedItemDesc
+        public override BaseWrapper EditComponent
         {
             get
             {
-                return new EditedComponentDescription() { Type = EditedComponentDescription.ComponentType.MFBuildFile, Name = Path.GetFileName(_editingFilePath), Note = _editingFilePath };
+                return BuildFileWrapper.GetWrapper(this._editingFilePath);
             }
         }
 

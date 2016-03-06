@@ -8,19 +8,12 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
             : base(LibCat)
         {
             InitializeComponent();
-
+            this.NodeName = Strings.Templates;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Templates;
-            }
-        }
         public override bool OnApplyChanges()
         {
 
@@ -31,7 +24,7 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
         protected override void RefreshControl()
         {
             ProjCacheListBox.Items.Clear();
-            foreach (string s in LibCat.LibraryProjCache)
+            foreach (string s in Wrapper.LibraryProjCache)
             {
                 ProjCacheListBox.Items.Add(s);
             }

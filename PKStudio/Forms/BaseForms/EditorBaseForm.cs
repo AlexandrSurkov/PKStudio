@@ -6,32 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PKStudio.ItemWrappers;
 
 namespace PKStudio.Forms.BaseForms
 {
     public partial class EditorBaseForm : BasePKInventoryForm
     {
-        public class EditedComponentDescription
-        {
-            public enum ComponentType
-            {
-                Library,
-                Feature,
-                MFAssembly,
-                MFSolution,
-                Processor,
-                OperatingSystem,
-                BuildTool,
-                ISA,
-                BuildParameter,
-                LibraryCategory,
-                MFBuildFile,
-                Unknown
-            }
-            public ComponentType Type { get; set; }
-            public string Name { get; set; }
-            public string Note { get; set; }
-        }
 
         protected string FormText = "";
         protected string ModifiedFormText = "";
@@ -60,7 +40,7 @@ namespace PKStudio.Forms.BaseForms
 
         public bool Modified { get { return this.modified; } }
 
-        public virtual EditedComponentDescription EditedItemDesc
+        public virtual BaseWrapper EditComponent
         {
             get
             {
@@ -90,7 +70,7 @@ namespace PKStudio.Forms.BaseForms
                 {
                     using (PKStudio.Dialogs.SaveChangesDialog SCDlg = new Dialogs.SaveChangesDialog())
                     {
-                        DialogResult res = SCDlg.ShowDialog(this, this.EditedItemDesc);
+                        DialogResult res = SCDlg.ShowDialog(this, this.EditComponent);
 
                         switch (res)
                         {

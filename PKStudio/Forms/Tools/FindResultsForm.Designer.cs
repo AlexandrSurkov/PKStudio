@@ -40,9 +40,6 @@
             this.goToPreviousLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openContainingFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.ComponentsLV = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.GoToBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -50,6 +47,7 @@
             this.FindNextBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ClearAllBtn = new System.Windows.Forms.ToolStripButton();
+            this._treeView = new PKStudio.Tree.InventoryTree();
             this.contextMenuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -150,37 +148,6 @@
             this.imageList1.Images.SetKeyName(16, "document_error.png");
             this.imageList1.Images.SetKeyName(17, "text_code_a.png");
             // 
-            // ComponentsLV
-            // 
-            this.ComponentsLV.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2,
-            this.columnHeader1});
-            this.ComponentsLV.ContextMenuStrip = this.contextMenuStrip1;
-            this.ComponentsLV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ComponentsLV.FullRowSelect = true;
-            this.ComponentsLV.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.ComponentsLV.HideSelection = false;
-            this.ComponentsLV.Location = new System.Drawing.Point(0, 25);
-            this.ComponentsLV.MultiSelect = false;
-            this.ComponentsLV.Name = "ComponentsLV";
-            this.ComponentsLV.ShowGroups = false;
-            this.ComponentsLV.Size = new System.Drawing.Size(655, 401);
-            this.ComponentsLV.SmallImageList = this.imageList1;
-            this.ComponentsLV.TabIndex = 17;
-            this.ComponentsLV.UseCompatibleStateImageBehavior = false;
-            this.ComponentsLV.View = System.Windows.Forms.View.Details;
-            this.ComponentsLV.SelectedIndexChanged += new System.EventHandler(this.ComponentsLV_SelectedIndexChanged);
-            this.ComponentsLV.SizeChanged += new System.EventHandler(this.ComponentsLV_SizeChanged);
-            this.ComponentsLV.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ComponentsLV_MouseDoubleClick);
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Width = 200;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 200;
-            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -248,12 +215,22 @@
             this.ClearAllBtn.Text = "Clear all";
             this.ClearAllBtn.Click += new System.EventHandler(this.ClearAllBtn_Click);
             // 
+            // _treeView
+            // 
+            this._treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._treeView.LoadOnDemand = false;
+            this._treeView.Location = new System.Drawing.Point(0, 25);
+            this._treeView.Name = "_treeView";
+            this._treeView.Size = new System.Drawing.Size(655, 401);
+            this._treeView.TabIndex = 2;
+            this._treeView.TreeSelectedNode = null;
+            // 
             // FindResultsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 426);
-            this.Controls.Add(this.ComponentsLV);
+            this.Controls.Add(this._treeView);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FindResultsForm";
@@ -275,8 +252,6 @@
         private System.Windows.Forms.ToolStripButton FindNextBtn;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton ClearAllBtn;
-        private System.Windows.Forms.ListView ComponentsLV;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -287,6 +262,6 @@
         private System.Windows.Forms.ToolStripMenuItem goToPreviousLocationToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripMenuItem openContainingFolderToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
+        protected Tree.InventoryTree _treeView;
     }
 }

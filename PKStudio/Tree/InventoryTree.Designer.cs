@@ -45,6 +45,7 @@
             this._treeView.Size = new System.Drawing.Size(337, 447);
             this._treeView.TabIndex = 1;
             this._treeView.Text = "treeViewAdv1";
+            this._treeView.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this._treeView_NodeMouseDoubleClick);
             this._treeView.SelectionChanged += new System.EventHandler(this._treeView_SelectionChanged);
             // 
             // InventoryTree

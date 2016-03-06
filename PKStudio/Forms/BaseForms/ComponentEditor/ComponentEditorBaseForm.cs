@@ -61,9 +61,26 @@ namespace PKStudio.Forms.BaseForms.ComponentEditor
                 node.Tag = page;
                 page.Initialize();
                 PageTree.Nodes.Add(node);
+                IEventComponent icomp = page as IEventComponent;
+                if (icomp != null)
+                {
+                    icomp.SelectionChangedEvent += new EventHandler<ObjectEventArgs>(icomp_SelectionChangedEvent);
+                    icomp.EditEvent += new EventHandler<ObjectEventArgs>(icomp_EditEvent);
+                }
             }
             PageTree.SelectedNode = PageTree.Nodes[0];
             SaveBtn.Enabled = false;
+        }
+
+
+        void icomp_EditEvent(object sender, ObjectEventArgs e)
+        {
+            OnEditEvent(e.Object);
+        }
+
+        void icomp_SelectionChangedEvent(object sender, ObjectEventArgs e)
+        {
+            OnSelectionChangeEvent(e.Object);
         }
 
         /// <summary>

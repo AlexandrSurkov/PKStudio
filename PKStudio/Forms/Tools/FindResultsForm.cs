@@ -2,17 +2,27 @@
 using PKStudio.TreeNodes;
 using PKStudio.ItemWrappers;
 using System.IO;
+using System.Collections.ObjectModel;
+using PKStudio.Tree;
+using PKStudio.Tree.Nodes;
 
 namespace PKStudio.Forms.Tools
 {
     public partial class FindResultsForm : PKStudio.Forms.BaseForms.BasePKInventoryForm
     {
+        private Collection<ComponentWrapper> componentList;
         public FindResultsForm()
         {
             InitializeComponent();
             PK.Wrapper.SearchComplitedEvent += new System.EventHandler<PortingKitWrapper.SearchComplitedEventArgs>(PKWrapper_SearchComplitedEvent);
             PK.Wrapper.ElementFindedEvent += new System.EventHandler<PortingKitWrapper.ElementFindedEventArgs>(Wrapper_ElementFindedEvent);
             PK.Wrapper.SearchStartedEvent += new System.EventHandler<PortingKitWrapper.SearchStartedEventArgs>(Wrapper_SearchStartedEvent);
+            _treeView.AddIconControl("Icon");
+            _treeView.AddTextBoxControl("Name");
+            _treeView.ShowLines = false;
+            _treeView.ShowPlusMinus = false;
+
+            componentList = new Collection<ComponentWrapper>();
         }
 
         void Wrapper_SearchStartedEvent(object sender, PortingKitWrapper.SearchStartedEventArgs e)
@@ -62,7 +72,7 @@ namespace PKStudio.Forms.Tools
             AddTextInList(Strings.FindAll + " \"" + e.SearchParams.What + "\" " + Strings.IN + " " + type + " " + Strings.IN + " " + where);
         }
 
-        private string GetComponentName(PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor ComponentDescriptor)
+        private string GetComponentName(PKStudio.PortingKitWrapper.SearchResultsHolder.SearchComponentDescriptor ComponentDescriptor)
         {
             string result = string.Empty;
             if (ComponentDescriptor.Parent != null)
@@ -80,63 +90,73 @@ namespace PKStudio.Forms.Tools
 
         void Wrapper_ElementFindedEvent(object sender, PortingKitWrapper.ElementFindedEventArgs e)
         {
+            Collection<ComponentNode> nodes = new Collection<ComponentNode>();
             if (e.ComponentDescriptor.Component != null)
             {
-                ListViewItem it = new ListViewItem(GetComponentName(e.ComponentDescriptor));
-                it.Tag = e.ComponentDescriptor;
-                switch (e.ComponentDescriptor.Component.ComponentType)
-                {
-                    case ComponentTypeWrapper.Library:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Library;
-                        break;
-                    case ComponentTypeWrapper.Feature:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Feature;
-                        break;
-                    case ComponentTypeWrapper.MFAssembly:
-                        break;
-                    case ComponentTypeWrapper.MFSolution:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Solution;
-                        break;
-                    case ComponentTypeWrapper.Processor:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Processor;
-                        break;
-                    case ComponentTypeWrapper.OperatingSystem:
-                        break;
-                    case ComponentTypeWrapper.BuildTool:
-                        break;
-                    case ComponentTypeWrapper.ISA:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.ISA;
-                        break;
-                    case ComponentTypeWrapper.BuildParameter:
-                        break;
-                    case ComponentTypeWrapper.LibraryCategory:
-                        it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.LibraryCategory;
-                        break;
-                    case ComponentTypeWrapper.Unknown:
-                        break;
-                    default:
-                        break;
-                }
-                AddItemInList(it);
+                componentList.Add(e.ComponentDescriptor.Component);
             }
-            else if (e.ComponentDescriptor.File != null)
-            {
+            foreach (ComponentWrapper component in componentList)
+  	        {
+                nodes.Add(new ComponentNode(component, null));
+	        }
+            _treeView.SetModel(InventoryBrowserModel.GetModel(nodes), false);
+            //if (e.ComponentDescriptor.Component != null)
+            //{
+            //    ListViewItem it = new ListViewItem(GetComponentName(e.ComponentDescriptor));
+            //    it.Tag = e.ComponentDescriptor;
+            //    switch (e.ComponentDescriptor.Component.ComponentType)
+            //    {
+            //        case ComponentTypeWrapper.Library:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Library;
+            //            break;
+            //        case ComponentTypeWrapper.Feature:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Feature;
+            //            break;
+            //        case ComponentTypeWrapper.MFAssembly:
+            //            break;
+            //        case ComponentTypeWrapper.MFSolution:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Solution;
+            //            break;
+            //        case ComponentTypeWrapper.Processor:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.Processor;
+            //            break;
+            //        case ComponentTypeWrapper.OperatingSystem:
+            //            break;
+            //        case ComponentTypeWrapper.BuildTool:
+            //            break;
+            //        case ComponentTypeWrapper.ISA:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.ISA;
+            //            break;
+            //        case ComponentTypeWrapper.BuildParameter:
+            //            break;
+            //        case ComponentTypeWrapper.LibraryCategory:
+            //            it.ImageIndex = (int)MFTreeNodeBase.ImageKeysEnum.LibraryCategory;
+            //            break;
+            //        case ComponentTypeWrapper.Unknown:
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //    AddItemInList(it);
+            //}
+            //else if (e.ComponentDescriptor.File != null)
+            //{
             
-                ListViewItem it = null;
+            //    ListViewItem it = null;
 
-                if (e.ComponentDescriptor.Line == null)
-                    it = new ListViewItem(GetComponentName(e.ComponentDescriptor));
-                else
-                {
-                    //it = new ListViewItem(GetComponentName(e.ComponentDescriptor) + ":      " + e.ComponentDescriptor.Line.Text.Trim());
-                    it = new ListViewItem(GetComponentName(e.ComponentDescriptor) + ":      ");
-                    it.SubItems.Add(e.ComponentDescriptor.Line.Text.Trim());
-                }
+            //    if (e.ComponentDescriptor.Line == null)
+            //        it = new ListViewItem(GetComponentName(e.ComponentDescriptor));
+            //    else
+            //    {
+            //        //it = new ListViewItem(GetComponentName(e.ComponentDescriptor) + ":      " + e.ComponentDescriptor.Line.Text.Trim());
+            //        it = new ListViewItem(GetComponentName(e.ComponentDescriptor) + ":      ");
+            //        it.SubItems.Add(e.ComponentDescriptor.Line.Text.Trim());
+            //    }
 
-                it.Tag = e.ComponentDescriptor;
-                it.ImageIndex = (int)MFSourceFileTreeNode.FileName2ImageKey(e.ComponentDescriptor.File.File);
-                AddItemInList(it);
-            }
+            //    it.Tag = e.ComponentDescriptor;
+            //    it.ImageIndex = (int)MFSourceFileTreeNode.FileName2ImageKey(e.ComponentDescriptor.File.File);
+            //    AddItemInList(it);
+            //}
         }
 
         void PKWrapper_SearchComplitedEvent(object sender, PKStudio.PortingKitWrapper.SearchComplitedEventArgs e)
@@ -205,47 +225,47 @@ namespace PKStudio.Forms.Tools
 
         private void GoToNext()
         {
-            int selected;
-            if (ComponentsLV.SelectedIndices.Count != 0)
-                selected = ComponentsLV.SelectedIndices[0];
-            else
-                selected = 0;
+            //int selected;
+            //if (ComponentsLV.SelectedIndices.Count != 0)
+            //    selected = ComponentsLV.SelectedIndices[0];
+            //else
+            //    selected = 0;
 
-            if (selected + 1 < ComponentsLV.Items.Count)
-            {
-                selected++;
-                ComponentsLV.Items[selected].Selected = true;
-                ComponentsLV.Items[selected].EnsureVisible();
-            }
+            //if (selected + 1 < ComponentsLV.Items.Count)
+            //{
+            //    selected++;
+            //    ComponentsLV.Items[selected].Selected = true;
+            //    ComponentsLV.Items[selected].EnsureVisible();
+            //}
 
             GoTo();
         }
 
         private void GoToPrev()
         {
-            int selected;
-            if (ComponentsLV.SelectedIndices.Count != 0)
-                selected = ComponentsLV.SelectedIndices[0];
-            else
-                selected = 0;
+            //int selected;
+            //if (ComponentsLV.SelectedIndices.Count != 0)
+            //    selected = ComponentsLV.SelectedIndices[0];
+            //else
+            //    selected = 0;
 
-            if (selected - 1 >= 0)
-            {
-                selected--;
-                ComponentsLV.Items[selected].Selected = true;
-                ComponentsLV.Items[selected].EnsureVisible();
-            }
+            //if (selected - 1 >= 0)
+            //{
+            //    selected--;
+            //    ComponentsLV.Items[selected].Selected = true;
+            //    ComponentsLV.Items[selected].EnsureVisible();
+            //}
 
             GoTo();
         }
 
         private void GoTo()
         {
-            if (ComponentsLV.SelectedItems.Count > 0)
-            {
-                if (ComponentsLV.SelectedItems[0].Tag != null)
-                    OnEditEvent(ComponentsLV.SelectedItems[0].Tag);
-            }
+            //if (ComponentsLV.SelectedItems.Count > 0)
+            //{
+            //    if (ComponentsLV.SelectedItems[0].Tag != null)
+            //        OnEditEvent(ComponentsLV.SelectedItems[0].Tag);
+            //}
         }
 
         private void Clear()
@@ -255,140 +275,140 @@ namespace PKStudio.Forms.Tools
 
         private void copyToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            if (ComponentsLV.SelectedItems.Count > 0)
-            {
-                Clipboard.SetText(ComponentsLV.SelectedItems[0].Text);
-            }
+            //if (ComponentsLV.SelectedItems.Count > 0)
+            //{
+            //    Clipboard.SetText(ComponentsLV.SelectedItems[0].Text);
+            //}
         }
 
         private delegate void AutoResizeListCallback();
         private void AutoResizeList()
         {
-            if (ComponentsLV.InvokeRequired)
-            {
-                AutoResizeListCallback d = new AutoResizeListCallback(AutoResizeList);
-                ComponentsLV.BeginInvoke(d, new object[] {  });
-            }
-            else
-            {
-                ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            }
+            //if (ComponentsLV.InvokeRequired)
+            //{
+            //    AutoResizeListCallback d = new AutoResizeListCallback(AutoResizeList);
+            //    ComponentsLV.BeginInvoke(d, new object[] {  });
+            //}
+            //else
+            //{
+            //    ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            //}
         }
 
         private delegate void AddTextInListCallback(string text);
         private void AddTextInList(string text)
         {
-            if (ComponentsLV.InvokeRequired)
-            {
-                AddTextInListCallback d = new AddTextInListCallback(AddTextInList);
-                ComponentsLV.BeginInvoke(d, new object[] { text });
-            }
-            else
-            {
-                ComponentsLV.Items.Add(text).EnsureVisible();
-                //ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            }
+            //if (ComponentsLV.InvokeRequired)
+            //{
+            //    AddTextInListCallback d = new AddTextInListCallback(AddTextInList);
+            //    ComponentsLV.BeginInvoke(d, new object[] { text });
+            //}
+            //else
+            //{
+            //    ComponentsLV.Items.Add(text).EnsureVisible();
+            //    //ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            //}
         }
 
         private delegate void AddItemInListCallback(ListViewItem item);
         private void AddItemInList(ListViewItem item)
         {
-            if (ComponentsLV.InvokeRequired)
-            {
-                AddItemInListCallback d = new AddItemInListCallback(AddItemInList);
-                ComponentsLV.BeginInvoke(d, new object[] { item });
-            }
-            else
-            {
-                ComponentsLV.Items.Add(item).EnsureVisible();
-                //ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);                
-            }
+            //if (ComponentsLV.InvokeRequired)
+            //{
+            //    AddItemInListCallback d = new AddItemInListCallback(AddItemInList);
+            //    ComponentsLV.BeginInvoke(d, new object[] { item });
+            //}
+            //else
+            //{
+            //    ComponentsLV.Items.Add(item).EnsureVisible();
+            //    //ComponentsLV.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);                
+            //}
         }
 
         private delegate void SortListCallback();
         private void SortList()
         {
-            if (ComponentsLV.InvokeRequired)
-            {
-                SortListCallback d = new SortListCallback(SortList);
-                ComponentsLV.BeginInvoke(d, new object[] { });
-            }
-            else
-            {
-                ComponentsLV.Sort();
-            }
+            //if (ComponentsLV.InvokeRequired)
+            //{
+            //    SortListCallback d = new SortListCallback(SortList);
+            //    ComponentsLV.BeginInvoke(d, new object[] { });
+            //}
+            //else
+            //{
+            //    ComponentsLV.Sort();
+            //}
         }
 
         private delegate void ClearItemListCallback();
         private void ClearItemList()
         {
-            if (ComponentsLV.InvokeRequired)
-            {
-                ClearItemListCallback d = new ClearItemListCallback(ClearItemList);
-                ComponentsLV.BeginInvoke(d, new object[] { });
-            }
-            else
-            {
-                ComponentsLV.Items.Clear();
-            }
+            //if (ComponentsLV.InvokeRequired)
+            //{
+            //    ClearItemListCallback d = new ClearItemListCallback(ClearItemList);
+            //    ComponentsLV.BeginInvoke(d, new object[] { });
+            //}
+            //else
+            //{
+            //    ComponentsLV.Items.Clear();
+            //}
         }
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (ComponentsLV.SelectedItems.Count > 0)
-            {
-                if (ComponentsLV.SelectedItems[0].Tag != null)
-                {
+            //if (ComponentsLV.SelectedItems.Count > 0)
+            //{
+            //    if (ComponentsLV.SelectedItems[0].Tag != null)
+            //    {
 
-                    if (ComponentsLV.SelectedItems[0].Tag is PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)
-                    {
-                        PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor compDesc = ComponentsLV.SelectedItems[0].Tag as PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor;
+            //        if (ComponentsLV.SelectedItems[0].Tag is PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)
+            //        {
+            //            PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor compDesc = ComponentsLV.SelectedItems[0].Tag as PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor;
 
-                        if (compDesc.Component != null)
-                        {
-                            string path = PK.Wrapper.ExpandEnvVars(compDesc.Component.ProjectPath, "");
-                            if ((!string.IsNullOrEmpty(path)) && (File.Exists(Path.GetFullPath(path))))
-                            {
-                                openContainingFolderToolStripMenuItem.Visible = true;
-                            }
-                            else
-                                openContainingFolderToolStripMenuItem.Visible = false;
-                        }
-                        else if (compDesc.File != null)
-                        {
-                            string path = PK.Wrapper.ExpandEnvVars(compDesc.File.FullPath, "");
-                            if ((!string.IsNullOrEmpty(path)) && (File.Exists(Path.GetFullPath(path))))
-                            {
-                                openContainingFolderToolStripMenuItem.Visible = true;
-                            }
-                            else
-                                openContainingFolderToolStripMenuItem.Visible = false;
-                        }
-                        else
-                            openContainingFolderToolStripMenuItem.Visible = false;
+            //            if (compDesc.Component != null)
+            //            {
+            //                string path = PK.Wrapper.ExpandEnvVars(compDesc.Component.ProjectPath, "");
+            //                if ((!string.IsNullOrEmpty(path)) && (File.Exists(Path.GetFullPath(path))))
+            //                {
+            //                    openContainingFolderToolStripMenuItem.Visible = true;
+            //                }
+            //                else
+            //                    openContainingFolderToolStripMenuItem.Visible = false;
+            //            }
+            //            else if (compDesc.File != null)
+            //            {
+            //                string path = PK.Wrapper.ExpandEnvVars(compDesc.File.FullPath, "");
+            //                if ((!string.IsNullOrEmpty(path)) && (File.Exists(Path.GetFullPath(path))))
+            //                {
+            //                    openContainingFolderToolStripMenuItem.Visible = true;
+            //                }
+            //                else
+            //                    openContainingFolderToolStripMenuItem.Visible = false;
+            //            }
+            //            else
+            //                openContainingFolderToolStripMenuItem.Visible = false;
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
         }
 
         private void openContainingFolderToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            if (ComponentsLV.SelectedItems.Count > 0)
-            {
-                if (ComponentsLV.SelectedItems[0].Tag != null)
-                {
-                    if (ComponentsLV.SelectedItems[0].Tag is PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)
-                    {
-                        PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor compDesc = ComponentsLV.SelectedItems[0].Tag as PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor;
+            //if (ComponentsLV.SelectedItems.Count > 0)
+            //{
+            //    if (ComponentsLV.SelectedItems[0].Tag != null)
+            //    {
+            //        if (ComponentsLV.SelectedItems[0].Tag is PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)
+            //        {
+            //            PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor compDesc = ComponentsLV.SelectedItems[0].Tag as PKStudio.PortingKitWrapper.SearchResultsHolder.ComponentDescriptor;
 
-                        if (compDesc.File != null)
-                            this.OnOpenContainingFolderEvent(compDesc.File.FullPath);
-                        if (compDesc.Component != null)
-                            this.OnOpenContainingFolderEvent(compDesc.Component.ProjectPath);
-                    }
-                }
-            }
+            //            if (compDesc.File != null)
+            //                this.OnOpenContainingFolderEvent(compDesc.File.FullPath);
+            //            if (compDesc.Component != null)
+            //                this.OnOpenContainingFolderEvent(compDesc.Component.ProjectPath);
+            //        }
+            //    }
+            //}
         }
     }
 }

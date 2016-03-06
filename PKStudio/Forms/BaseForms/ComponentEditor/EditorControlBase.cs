@@ -27,13 +27,7 @@ namespace PKStudio.Forms.BaseForms.ComponentEditor
         /// <summary>
         /// Control name in tree
         /// </summary>
-        public virtual string NodeName
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        public string NodeName {get; protected set;}
 
         public bool Modified
         {

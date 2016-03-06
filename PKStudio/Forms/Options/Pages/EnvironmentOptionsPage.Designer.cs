@@ -36,6 +36,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.ToolCB = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.VersionTB = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -109,11 +111,15 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.ToolCB, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label3, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.VersionTB, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -137,11 +143,30 @@
             this.ToolCB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ToolCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ToolCB.FormattingEnabled = true;
-            this.ToolCB.Location = new System.Drawing.Point(43, 3);
+            this.ToolCB.Location = new System.Drawing.Point(40, 3);
             this.ToolCB.Name = "ToolCB";
-            this.ToolCB.Size = new System.Drawing.Size(518, 21);
+            this.ToolCB.Size = new System.Drawing.Size(219, 21);
             this.ToolCB.TabIndex = 1;
             this.ToolCB.SelectedIndexChanged += new System.EventHandler(this.ToolCB_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(265, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Version:";
+            // 
+            // VersionTB
+            // 
+            this.VersionTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.VersionTB.Location = new System.Drawing.Point(316, 3);
+            this.VersionTB.Name = "VersionTB";
+            this.VersionTB.Size = new System.Drawing.Size(245, 20);
+            this.VersionTB.TabIndex = 2;
+            this.VersionTB.TextChanged += new System.EventHandler(this.VersionTB_TextChanged);
             // 
             // EnvironmentOptionsPage
             // 
@@ -170,5 +195,7 @@
         private System.Windows.Forms.TextBox PathTB;
         private System.Windows.Forms.Button BrowseBtn;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox VersionTB;
     }
 }

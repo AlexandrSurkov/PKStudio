@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.Threading;
 using OptionsHelper.Options;
 using PKStudio;
 using PKStudio.Forms.Options.Options;
@@ -13,49 +9,51 @@ namespace PKStudioLauncher
 {
     class Program
     {
-        static string PKStudioLauncherName = "PKStudioLauncher";
-        static string OptionsPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\options.dat";
-        static string PKStudioPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\PKStudio.exe";
+        private const string PKStudioLauncherName = "PKStudioLauncher";
+        static readonly string OptionsPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\options.dat";
+        static readonly string PKStudioPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\PKStudio.exe";
 
-        static void Main(string[] args)
+        static void Main()
         {
-            foreach (Process proc in Process.GetProcessesByName(PKStudioLauncherName))
+            foreach (var proc in Process.GetProcessesByName(PKStudioLauncherName))
             {
                 if (proc.Id != Process.GetCurrentProcess().Id)
                     return;
             }
 
-            string tool = string.Empty;
-            string toolPath = string.Empty;
-            string PKPath = string.Empty;
+            var tool = string.Empty;
+            var toolPath = string.Empty;
+            var toolVersion = string.Empty;
+            var pkPath = string.Empty;
 
             if (File.Exists(OptionsPath))
             {
-                OptionsSerializer serializer = OptionsSerializer.BackState(OptionsPath);
+                var serializer = OptionsSerializer.BackState(OptionsPath);
 
-                foreach (OptionsBase option in serializer.SOptions)
+                foreach (var option in serializer.SOptions)
                 {
-                    EnvironmentOption envOption = option as EnvironmentOption;
+                    var envOption = option as EnvironmentOption;
                     if (envOption != null)
                     {
                         tool = EnvironmentOption.GetToolString(envOption.Tool);
                         toolPath = envOption.Path;
+                        toolVersion = envOption.Version;
                     }
 
-                    PKVersionOption verOption = option as PKVersionOption;
+                    var verOption = option as PKVersionOption;
                     if (verOption != null)
                     {
-                        PKPath = verOption.PKVersion.Path;
+                        pkPath = verOption.PKVersion.Path;
                     }
                 }
             }
 
-            string path = "";
-            string portingKitRegistryValue = Environment.GetEnvironmentVariable("SPOCLIENT");
-            string SpoClientPath = "";
+            var path = "";
+            var portingKitRegistryValue = Environment.GetEnvironmentVariable("SPOCLIENT");
+            var spoClientPath = "";
             if (string.IsNullOrEmpty(portingKitRegistryValue) || !Directory.Exists(portingKitRegistryValue))
             {
-                portingKitRegistryValue = PKPath;
+                portingKitRegistryValue = pkPath;
             }
             if (string.IsNullOrEmpty(portingKitRegistryValue) || !Directory.Exists(portingKitRegistryValue))
             {
@@ -68,20 +66,20 @@ namespace PKStudioLauncher
 
             if (!Directory.Exists(path) || !Directory.Exists(path + @"\DeviceCode\Targets\"))
             {
-                using (SetSPOForm of = new SetSPOForm())
+                using (var of = new SetSPOForm())
                 {
                     if (of.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                     {
-                        Console.WriteLine(".NET Micro Framework Porting Kit directory was not found. Waiting for exit...");
+                        Console.WriteLine(@".NET Micro Framework Porting Kit directory was not found. Waiting for exit...");
                         Process.GetCurrentProcess().WaitForExit();
                     }
                     else
                     {
                         if (Directory.Exists(path + @"\DeviceCode\Targets\"))
-                            SpoClientPath = of.Path;
+                            spoClientPath = of.Path;
                         else
                         {
-                            Console.WriteLine(".NET Micro Framework Porting Kit directory was not found. Waiting for exit...");
+                            Console.WriteLine(@".NET Micro Framework Porting Kit directory was not found. Waiting for exit...");
                             Process.GetCurrentProcess().WaitForExit();
                         }
                     }
@@ -90,22 +88,22 @@ namespace PKStudioLauncher
             else
             {
                 Environment.SetEnvironmentVariable("SPOCLIENT", path);
-                SpoClientPath = path;
+                spoClientPath = path;
             }
 
 
-            if (SpoClientPath.Substring(SpoClientPath.Length - 1, 1) != @"\") SpoClientPath += @"\";
-            path = string.Format("{0}setenv_base.cmd {1} PORT {2}", SpoClientPath, tool, toolPath);
+            if (spoClientPath.Substring(spoClientPath.Length - 1, 1) != @"\") spoClientPath += @"\";
+            path = string.Format("{0}setenv_base.cmd {1} {2} {3}", spoClientPath, tool, toolVersion, toolPath);
 
-            foreach (Process proc in Process.GetProcessesByName("PKStudio"))
+            foreach (var proc in Process.GetProcessesByName("PKStudio"))
             {
-                Console.WriteLine("Another running copy of PKStudio has been detected. Waiting for exit...");
+                Console.WriteLine(@"Another running copy of PKStudio has been detected. Waiting for exit...");
                 proc.WaitForExit();
             }
             if (File.Exists(PKStudioPath))
             {
-                Process process = new Process();
-                ProcessStartInfo info = process.StartInfo;
+                var process = new Process();
+                var info = process.StartInfo;
                 info.FileName = Environment.ExpandEnvironmentVariables("%comspec%");
                 info.RedirectStandardInput = true;
                 info.UseShellExecute = false;
@@ -118,7 +116,7 @@ namespace PKStudioLauncher
             }
             else
             {
-                Console.WriteLine("PKStudio executable not found.");
+                Console.WriteLine(@"PKStudio executable not found.");
             }
         }
     }

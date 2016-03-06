@@ -15,18 +15,14 @@ namespace PKStudio.Forms.Options.Pages
 
             ToolCB.Items.Clear();
 
-            ToolCB.Items.Add("Visual Studio 10");
-            ToolCB.Items.Add("Visual Studio 9");
-            ToolCB.Items.Add("SHC 9.2");
-            ToolCB.Items.Add("RVDS 4.0");
-            ToolCB.Items.Add("RVDS 3.1");
-            ToolCB.Items.Add("RVDS 3.0");
-            ToolCB.Items.Add("MDK 3.80a");
-            ToolCB.Items.Add("MDK 3.1");
-            ToolCB.Items.Add("GCC 4.2");
-            ToolCB.Items.Add("ADI5.0");
+            ToolCB.Items.Add("GCC");
+            ToolCB.Items.Add("GCCOP");
+            ToolCB.Items.Add("MDK");
+            ToolCB.Items.Add("RVDS");
+            ToolCB.Items.Add("SHC");
+            ToolCB.Items.Add("VS");
 
-            ToolCB.SelectedIndex = 6;
+            ToolCB.SelectedIndex = 3;
             UpdatePath();
             this.Modified = false;
         }
@@ -65,7 +61,8 @@ namespace PKStudio.Forms.Options.Pages
             EnvironmentOption eo = (EnvironmentOption)this.controlledOption;
 
             PathTB.Text = eo.Path;
-            ToolCB.SelectedIndex = (int)eo.Tool;            
+            ToolCB.SelectedIndex = (int)eo.Tool;
+            VersionTB.Text = eo.Version;
             this.Modified = false;
         }
         #endregion
@@ -90,46 +87,34 @@ namespace PKStudio.Forms.Options.Pages
 
         private void UpdatePath()
         {
-            if (!string.IsNullOrEmpty(PathTB.Text))
+            if (string.IsNullOrEmpty(PathTB.Text) || (string.IsNullOrEmpty(VersionTB.Text)))
             {
                 switch ((EnvironmentOption.TOOL)ToolCB.SelectedIndex)
                 {
-                    case EnvironmentOption.TOOL.VS10:
+                    case EnvironmentOption.TOOL.GCC:
                         break;
-                    case EnvironmentOption.TOOL.VS9:
+                    case EnvironmentOption.TOOL.GCC_OP:
                         break;
                     case EnvironmentOption.TOOL.SHC:
                         break;
-                    case EnvironmentOption.TOOL.RVDS4_0:
-                        break;
-                    case EnvironmentOption.TOOL.RVDS3_1:
-                        break;
-                    case EnvironmentOption.TOOL.RVDS3_0:
-                        break;
-                    case EnvironmentOption.TOOL.MDK3_80a:
+                    case EnvironmentOption.TOOL.MDK:
                         RegistryKey key = null;
-                        key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Keil\Products\RLARM");
-                        if (key != null)
-                        {
-                            PathTB.Text = (string)key.GetValue("Path", "");
-                            break;
-                        }
                         key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Keil\Products\MDK");
                         if (key != null)
                         {
                             PathTB.Text = (string)key.GetValue("Path", "");
+                            VersionTB.Text = ((string)key.GetValue("Version", "")).TrimStart(new[]{'V'});
+                            break;
+                        }
+                        key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Keil\Products\RLARM");
+                        if (key != null)
+                        {
+                            PathTB.Text = (string)key.GetValue("Path", "");
+                            VersionTB.Text = ((string)key.GetValue("Version", "")).TrimStart(new[] { 'V' });
                             break;
                         }
                         break;
-                    case EnvironmentOption.TOOL.MDK3_1:
-                        break;
-                    case EnvironmentOption.TOOL.GCC:
-                        break;
-                    case EnvironmentOption.TOOL.BLACKFIN:
-                        break;
-                    case EnvironmentOption.TOOL.RVDS4_1:
-                        break;
-                    default:
+                    case EnvironmentOption.TOOL.RVDS:
                         break;
                 }
 
@@ -142,6 +127,14 @@ namespace PKStudio.Forms.Options.Pages
             EnvironmentOption eo = (EnvironmentOption)this.controlledOption;
             eo.Path = PathTB.Text;
             ModifiedChange();
+        }
+
+        private void VersionTB_TextChanged(object sender, System.EventArgs e)
+        {
+            EnvironmentOption eo = (EnvironmentOption)this.controlledOption;
+            eo.Version = VersionTB.Text;
+            ModifiedChange();
+
         }
     }
 }

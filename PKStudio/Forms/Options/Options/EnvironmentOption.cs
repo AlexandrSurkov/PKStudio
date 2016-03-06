@@ -10,11 +10,10 @@ namespace PKStudio.Forms.Options.Options
     [Serializable]
     public class EnvironmentOption : OptionsHelper.Options.OptionsBase
     {
-        TOOL tool = TOOL.MDK3_80a;
-        private string path = string.Empty;
 
-        public TOOL Tool { get { return this.tool; } set { this.tool = value; } }
-        public string Path { get { return this.path; } set { this.path = value; } }
+        public TOOL Tool { get ; set ; }
+        public string Version { get ; set ; }
+        public string Path {get; set; }
 
         public override void OnInitialized()
         {
@@ -24,95 +23,39 @@ namespace PKStudio.Forms.Options.Options
         [Serializable]
         public enum TOOL : int
         {
-            /// <summary>
-            /// Visual Studio 10
-            /// </summary>
-            VS10 = 0,
-            /// <summary>
-            /// Visual Studio 9
-            /// </summary>
-            VS9 = 1,
-            /// <summary>
-            /// SHC 9.2
-            /// </summary>
-            SHC = 2,
-            /// <summary>
-            /// RVDS 4.0
-            /// </summary>
-            RVDS4_0 = 3,
-            /// <summary>
-            /// RVDS 3.1
-            /// </summary>
-            RVDS3_1 = 4,
-            /// <summary>
-            /// RVDS 3.0
-            /// </summary>
-            RVDS3_0 = 5,
-            /// <summary>
-            /// MDK 3.80a
-            /// </summary>
-            MDK3_80a = 6,
-            /// <summary>
-            /// MDK 3.1
-            /// </summary>
-            MDK3_1 = 7,
-            /// <summary>
-            /// GCC 4.2
-            /// </summary>
-            GCC = 8,
-            /// <summary>
-            /// ADI5.0
-            /// </summary>
-            BLACKFIN = 9,
-            /// <summary>
-            /// RVDS 4.1
-            /// </summary>
-            RVDS4_1 = 10,
-
+            GCC,
+            GCC_OP,
+            MDK,
+            RVDS,
+            SHC,
+            VS
         }
 
         public static string GetToolString(TOOL tool)
         {
-            string compiler_tool_version = string.Empty;
+            var compilerToolVersion = string.Empty;
             switch (tool)
             {
-                case TOOL.VS10:
-                    compiler_tool_version = "VS10";
+                case TOOL.GCC:
+                    compilerToolVersion = "GCC";
                     break;
-                case TOOL.VS9:
-                    compiler_tool_version = "VS9";
+                case TOOL.GCC_OP:
+                    compilerToolVersion = "GCCOP";
+                    break;
+                case TOOL.MDK:
+                    compilerToolVersion = "MDK";
+                    break;
+                case TOOL.RVDS:
+                    compilerToolVersion = "RVDS";
                     break;
                 case TOOL.SHC:
-                    compiler_tool_version = "SHC9.2";
+                    compilerToolVersion = "SHC";
                     break;
-                case TOOL.RVDS4_0:
-                    compiler_tool_version = "RVDS4.0";
-                    break;
-                case TOOL.RVDS3_1:
-                    compiler_tool_version = "RVDS3.1";
-                    break;
-                case TOOL.RVDS3_0:
-                    compiler_tool_version = "RVDS3.0";
-                    break;
-                case TOOL.MDK3_80a:
-                    compiler_tool_version = "MDK3.80a";
-                    break;
-                case TOOL.MDK3_1:
-                    compiler_tool_version = "MDK3.1";
-                    break;
-                case TOOL.GCC:
-                    compiler_tool_version = "GCC4.2";
-                    break;
-                case TOOL.BLACKFIN:
-                    compiler_tool_version = "ADI5.0";
-                    break;
-                case TOOL.RVDS4_1:
-                    compiler_tool_version = "RVDS4.1";
-                    break;
-                default:
+                case TOOL.VS:
+                    compilerToolVersion = "VS";
                     break;
             }
-            return compiler_tool_version;
+            return compilerToolVersion;
         }
 
         public override bool OnApplyChanges()

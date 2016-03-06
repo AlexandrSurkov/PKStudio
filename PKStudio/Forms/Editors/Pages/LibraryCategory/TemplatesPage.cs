@@ -8,18 +8,12 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
         {
             InitializeComponent();
 
+            this.NodeName = Strings.LibraryProjCache;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.LibraryProjCache;
-            }
-        }
         public override bool OnApplyChanges()
         {
            
@@ -30,7 +24,7 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
         protected override void RefreshControl()
         {
             TemplatesRtb.Clear();
-            foreach (ApiTemplateWrapper s in LibCat.Templates)
+            foreach (ApiTemplateWrapper s in this.Wrapper.Templates)
             {
                 TemplatesRtb.AppendText("FilePath: " + s.FilePath + "\r\n");
                 TemplatesRtb.AppendText("Description: " + s.Description + "\r\n\r\n");

@@ -300,6 +300,7 @@ namespace PKStudio.ItemWrappers
             }
         }
 
+
         [Category("General")]
         public string ProjectPath
         {
@@ -354,7 +355,41 @@ namespace PKStudio.ItemWrappers
             }
         }
 
+        //[Category("General")]
+        //public string ScatterExt
+        //{
+        //    get
+        //    {
+        //        return this.InnerObject.ScatterExt;
+        //    }
+        //    set
+        //    {
+        //        this.InnerObject.ScatterExt = value;
+        //    }
+        //}
+
+        //[Category("General")]
+        //public BuildFileWrapper ScatterFile
+        //{
+        //    get
+        //    {
+        //        if (this.InnerObject.Version != null)
+        //            return BaseWrapper.Wrap<BuildFileWrapper>(this.InnerObject.ScatterFile);
+        //        else
+        //            return null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null)
+        //            this.InnerObject.ScatterFile = value.InnerObject;
+        //        else
+        //            this.InnerObject.ScatterFile = null;
+        //    }
+        //}
+
+
         [Category("General")]
+        [TypeConverter(typeof(ExpandableObjectConverterEx))]
         public string ToolPath
         {
             get

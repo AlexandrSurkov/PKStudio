@@ -16,11 +16,11 @@ namespace PKStudio
 
         public class ElementFindedEventArgs : EventArgs
         {
-            public ElementFindedEventArgs(SearchResultsHolder.ComponentDescriptor ComponentDescriptor)
+            public ElementFindedEventArgs(SearchResultsHolder.SearchComponentDescriptor ComponentDescriptor)
             {
                 this.ComponentDescriptor = ComponentDescriptor;
             }
-            public SearchResultsHolder.ComponentDescriptor ComponentDescriptor { get; set; }
+            public SearchResultsHolder.SearchComponentDescriptor ComponentDescriptor { get; set; }
         }
 
         public class SearchComplitedEventArgs : EventArgs
@@ -101,7 +101,7 @@ namespace PKStudio
 
         public class SearchResultsHolder
         {
-            public class ComponentDescriptor
+            public class SearchComponentDescriptor
             {
                 public class LineDescriptor
                 {
@@ -113,7 +113,7 @@ namespace PKStudio
                     public int Num { get; set; }
                     public string Text { get; set; }
                 }
-                public ComponentDescriptor()
+                public SearchComponentDescriptor()
                 {
                     this.Parent = null;
                     this.Component = null;
@@ -121,7 +121,7 @@ namespace PKStudio
                     this.Line = null;
                 }
 
-                public ComponentDescriptor(ComponentWrapper Component)
+                public SearchComponentDescriptor(ComponentWrapper Component)
                 {
                     this.Parent = null;
                     this.Component = Component;
@@ -129,7 +129,7 @@ namespace PKStudio
                     this.Line = null;
                 }
 
-                public ComponentDescriptor(BuildFileWrapper File)
+                public SearchComponentDescriptor(BuildFileWrapper File)
                 {
                     this.Parent = null;
                     this.Component = null;
@@ -137,14 +137,14 @@ namespace PKStudio
                     this.Line = null;
                 }
 
-                public ComponentDescriptor(ComponentDescriptor Parent, ComponentWrapper Component)
+                public SearchComponentDescriptor(SearchComponentDescriptor Parent, ComponentWrapper Component)
                 {
                     this.Parent = Parent;
                     this.Component = Component;
                     this.File = null;
                     this.Line = null;
                 }
-                public ComponentDescriptor(ComponentDescriptor Parent, BuildFileWrapper File)
+                public SearchComponentDescriptor(SearchComponentDescriptor Parent, BuildFileWrapper File)
                 {
                     this.Parent = Parent;
                     this.Component = null;
@@ -152,7 +152,7 @@ namespace PKStudio
                     this.Line = null;
                 }
 
-                public ComponentDescriptor(ComponentDescriptor Parent, BuildFileWrapper File, LineDescriptor Line)
+                public SearchComponentDescriptor(SearchComponentDescriptor Parent, BuildFileWrapper File, LineDescriptor Line)
                 {
                     this.Parent = Parent;
                     this.Component = null;
@@ -160,7 +160,7 @@ namespace PKStudio
                     this.Line = Line;
                 }
 
-                public ComponentDescriptor Parent { get; set; }
+                public SearchComponentDescriptor Parent { get; set; }
                 public ComponentWrapper Component { get; set; }
                 public BuildFileWrapper File { get; set; }
                 public LineDescriptor Line { get; set; }
@@ -168,9 +168,9 @@ namespace PKStudio
 
             public SearchResultsHolder()
             {
-                FindedComponents = new List<ComponentDescriptor>();
+                FindedComponents = new List<SearchComponentDescriptor>();
             }
-            public List<ComponentDescriptor> FindedComponents { get; set; }
+            public List<SearchComponentDescriptor> FindedComponents { get; set; }
 
             /// <summary>
             /// Всего просмотрено компонентов
@@ -254,6 +254,7 @@ namespace PKStudio
                         this.m_bw.LoadDefaultLibraryCategories(this.m_spoClientPath);
                         m_worker.ReportProgress(30, "Load Default Libraries...");
                         this.m_bw.LoadDefaultLibraries(this.m_spoClientPath);
+                        this.m_bw.LoadLibraries(Path.Combine(this.m_spoClientPath, "Test\\Native\\Src"));
                         m_worker.ReportProgress(60, "Load Default Assemblies...");
                         this.m_bw.LoadDefaultAssemblies(this.m_spoClientPath);
                         m_worker.ReportProgress(70, "Load Default Features...");
@@ -281,6 +282,8 @@ namespace PKStudio
                             m_worker.ReportProgress(30, "Load Solution Libraries...");
                             this.m_bw.LoadLibraries(this.m_solution.ProjectPath);
                         }
+                        this.m_bw.LoadLibraries(Path.Combine(this.m_spoClientPath, "Test\\Native\\Src"));
+
                         break;
 
                     case BackgroundWorkerType.LoadSolution:
@@ -1055,6 +1058,20 @@ namespace PKStudio
 
         #endregion
 
+        #region BuildTools
+
+        public BuildToolWrapper_ FindBuildTool(string buildToolGuid)
+        {
+            return this.m_helper.FindBuildTool(buildToolGuid);
+        }
+
+        public BuildToolWrapper_ FindBuildToolByName(string buildToolName)
+        {
+            return this.m_helper.FindBuildToolByName(buildToolName);
+        }
+
+        #endregion
+
         #region Solutions
 
         public SolutionWrapper[] GetSolutions()
@@ -1197,11 +1214,6 @@ namespace PKStudio
             return Environment.ExpandEnvironmentVariables(result);
         }
 
-        public string ExpandVars(string text, string path)
-        {
-            return ExpandVars(text, path);
-        }
-
 
         /// <summary>
         /// Searchs components in inventory
@@ -1255,9 +1267,9 @@ namespace PKStudio
                             LibraryWrapper LW = this.FindLibrary(CW);
                             if ((LW != null))// && (!Libs.Contains(LW)))
                             {
-                                SearchResultsHolder.ComponentDescriptor ProjectDesc = new SearchResultsHolder.ComponentDescriptor();
+                                SearchResultsHolder.SearchComponentDescriptor ProjectDesc = new SearchResultsHolder.SearchComponentDescriptor();
                                 ProjectDesc.Component = ComponentWrapper.GetComponentWrapper(PW);
-                                ProjectDesc.Parent = new SearchResultsHolder.ComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
+                                ProjectDesc.Parent = new SearchResultsHolder.SearchComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
                                 this.CheckLibrary(ProjectDesc, LW, what, MatchCase, MatchWholeWord);
                             }
                         }
@@ -1269,9 +1281,9 @@ namespace PKStudio
         {
             CheckLibrary(null, lib, what, MatchCase, MatchWholeWord);
         }
-        private void CheckLibrary(SearchResultsHolder.ComponentDescriptor ProjectDesc, LibraryWrapper lib, string what, bool MatchCase, bool MatchWholeWord)
+        private void CheckLibrary(SearchResultsHolder.SearchComponentDescriptor ProjectDesc, LibraryWrapper lib, string what, bool MatchCase, bool MatchWholeWord)
         {
-            SearchResultsHolder.ComponentDescriptor CompDesc = new SearchResultsHolder.ComponentDescriptor(ComponentWrapper.GetComponentWrapper(lib));
+            SearchResultsHolder.SearchComponentDescriptor CompDesc = new SearchResultsHolder.SearchComponentDescriptor(ComponentWrapper.GetComponentWrapper(lib));
             if (ProjectDesc != null)
                 CompDesc.Parent = ProjectDesc;
 
@@ -1346,9 +1358,9 @@ namespace PKStudio
                             LibraryCategoryWrapper LCW = this.FindLibraryCategory(CW.Guid);
                             if ((LCW != null))// && (!Libs.Contains(LW)))
                             {
-                                SearchResultsHolder.ComponentDescriptor ProjectDesc = new SearchResultsHolder.ComponentDescriptor();
+                                SearchResultsHolder.SearchComponentDescriptor ProjectDesc = new SearchResultsHolder.SearchComponentDescriptor();
                                 ProjectDesc.Component = ComponentWrapper.GetComponentWrapper(PW);
-                                ProjectDesc.Parent = new SearchResultsHolder.ComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
+                                ProjectDesc.Parent = new SearchResultsHolder.SearchComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
                                 this.CheckLibraryCategory(ProjectDesc, LCW, what, MatchCase, MatchWholeWord);
                             }
                         }
@@ -1361,9 +1373,9 @@ namespace PKStudio
         {
             CheckLibraryCategory(null, libcat, what, MatchCase, MatchWholeWord);
         }
-        private void CheckLibraryCategory(SearchResultsHolder.ComponentDescriptor ProjectDesc, LibraryCategoryWrapper libcat, string what, bool MatchCase, bool MatchWholeWord)
+        private void CheckLibraryCategory(SearchResultsHolder.SearchComponentDescriptor ProjectDesc, LibraryCategoryWrapper libcat, string what, bool MatchCase, bool MatchWholeWord)
         {
-            SearchResultsHolder.ComponentDescriptor CompDesc = new SearchResultsHolder.ComponentDescriptor(ComponentWrapper.GetComponentWrapper(libcat));
+            SearchResultsHolder.SearchComponentDescriptor CompDesc = new SearchResultsHolder.SearchComponentDescriptor(ComponentWrapper.GetComponentWrapper(libcat));
             if (ProjectDesc != null)
                 CompDesc.Parent = ProjectDesc;
 
@@ -1440,9 +1452,9 @@ namespace PKStudio
                             FeatureWrapper FW = this.FindFeature(CW.Guid);
                             if ((FW != null))// && (!Libs.Contains(LW)))
                             {
-                                SearchResultsHolder.ComponentDescriptor ProjectDesc = new SearchResultsHolder.ComponentDescriptor();
+                                SearchResultsHolder.SearchComponentDescriptor ProjectDesc = new SearchResultsHolder.SearchComponentDescriptor();
                                 ProjectDesc.Component = ComponentWrapper.GetComponentWrapper(PW);
-                                ProjectDesc.Parent = new SearchResultsHolder.ComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
+                                ProjectDesc.Parent = new SearchResultsHolder.SearchComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution));
                                 this.CheckFeature(ProjectDesc, FW, what, MatchCase, MatchWholeWord);
                             }
                         }
@@ -1455,9 +1467,9 @@ namespace PKStudio
         {
             CheckFeature(null, feat, what, MatchCase, MatchWholeWord);
         }
-        private void CheckFeature(SearchResultsHolder.ComponentDescriptor ProjectDesc, FeatureWrapper feat, string what, bool MatchCase, bool MatchWholeWord)
+        private void CheckFeature(SearchResultsHolder.SearchComponentDescriptor ProjectDesc, FeatureWrapper feat, string what, bool MatchCase, bool MatchWholeWord)
         {
-            SearchResultsHolder.ComponentDescriptor CompDesc = new SearchResultsHolder.ComponentDescriptor(ComponentWrapper.GetComponentWrapper(feat));
+            SearchResultsHolder.SearchComponentDescriptor CompDesc = new SearchResultsHolder.SearchComponentDescriptor(ComponentWrapper.GetComponentWrapper(feat));
             if (ProjectDesc != null)
                 CompDesc.Parent = ProjectDesc;
 
@@ -1543,7 +1555,7 @@ namespace PKStudio
                         FilesList.AddRange(LW.SourceFiles);
                     }
 
-                    SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(ComponentWrapper.GetComponentWrapper(LW));
+                    SearchResultsHolder.SearchComponentDescriptor LibraryDesc = new SearchResultsHolder.SearchComponentDescriptor(ComponentWrapper.GetComponentWrapper(LW));
 
                     foreach (BuildFileWrapper file in FilesList)
                     {
@@ -1580,7 +1592,7 @@ namespace PKStudio
 
                                 //SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(ProjectDesc, ComponentWrapper.GetComponentWrapper(LW));
 
-                                SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(new SearchResultsHolder.ComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution)), ComponentWrapper.GetComponentWrapper(LW));
+                                SearchResultsHolder.SearchComponentDescriptor LibraryDesc = new SearchResultsHolder.SearchComponentDescriptor(new SearchResultsHolder.SearchComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution)), ComponentWrapper.GetComponentWrapper(LW));
 
                                 if (!Solution.IsReference(LW))
                                 {
@@ -1631,9 +1643,9 @@ namespace PKStudio
         {
             CheckFile(null, file, what, MatchCase, MatchWholeWord);
         }
-        private void CheckFile(SearchResultsHolder.ComponentDescriptor ProjectDesc, BuildFileWrapper file, string what, bool MatchCase, bool MatchWholeWord)
+        private void CheckFile(SearchResultsHolder.SearchComponentDescriptor ProjectDesc, BuildFileWrapper file, string what, bool MatchCase, bool MatchWholeWord)
         {
-            SearchResultsHolder.ComponentDescriptor CompDesc = new SearchResultsHolder.ComponentDescriptor(file);
+            SearchResultsHolder.SearchComponentDescriptor CompDesc = new SearchResultsHolder.SearchComponentDescriptor(file);
             if (ProjectDesc != null)
                 CompDesc.Parent = ProjectDesc;
 
@@ -1724,7 +1736,7 @@ namespace PKStudio
                         FilesList.AddRange(LW.SourceFiles);
                     }
 
-                    SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(ComponentWrapper.GetComponentWrapper(LW));
+                    SearchResultsHolder.SearchComponentDescriptor LibraryDesc = new SearchResultsHolder.SearchComponentDescriptor(ComponentWrapper.GetComponentWrapper(LW));
 
                     foreach (BuildFileWrapper file in FilesList)
                     {
@@ -1760,7 +1772,7 @@ namespace PKStudio
 
                                 //SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(ProjectDesc, ComponentWrapper.GetComponentWrapper(LW));
 
-                                SearchResultsHolder.ComponentDescriptor LibraryDesc = new SearchResultsHolder.ComponentDescriptor(new SearchResultsHolder.ComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution)), ComponentWrapper.GetComponentWrapper(LW));
+                                SearchResultsHolder.SearchComponentDescriptor LibraryDesc = new SearchResultsHolder.SearchComponentDescriptor(new SearchResultsHolder.SearchComponentDescriptor(null, ComponentWrapper.GetComponentWrapper(Solution)), ComponentWrapper.GetComponentWrapper(LW));
 
                                 if (!Solution.IsReference(LW))
                                 {
@@ -1780,7 +1792,7 @@ namespace PKStudio
         {
             CheckTextInFile(null, file, what, MatchCase, MatchWholeWord);
         }
-        private void CheckTextInFile(SearchResultsHolder.ComponentDescriptor ProjectDesc, BuildFileWrapper file, string what, bool MatchCase, bool MatchWholeWord)
+        private void CheckTextInFile(SearchResultsHolder.SearchComponentDescriptor ProjectDesc, BuildFileWrapper file, string what, bool MatchCase, bool MatchWholeWord)
         {
             if (!File.Exists(file.FullPath)) return;
             
@@ -1796,11 +1808,11 @@ namespace PKStudio
                     LineNum++;
                     string Line = tr.ReadLine();
 
-                    SearchResultsHolder.ComponentDescriptor CompDesc = new SearchResultsHolder.ComponentDescriptor(file);
+                    SearchResultsHolder.SearchComponentDescriptor CompDesc = new SearchResultsHolder.SearchComponentDescriptor(file);
                     if (ProjectDesc != null)
                         CompDesc.Parent = ProjectDesc;
 
-                    CompDesc.Line = new SearchResultsHolder.ComponentDescriptor.LineDescriptor(LineNum, Line);
+                    CompDesc.Line = new SearchResultsHolder.SearchComponentDescriptor.LineDescriptor(LineNum, Line);
 
                     //if (MatchWholeWord)
                     //{
@@ -1881,7 +1893,7 @@ namespace PKStudio
         /// </summary>
         public event EventHandler<ElementFindedEventArgs> ElementFindedEvent;
 
-        private void OnElementFinded(SearchResultsHolder.ComponentDescriptor component)
+        private void OnElementFinded(SearchResultsHolder.SearchComponentDescriptor component)
         {
             if (ElementFindedEvent != null)
             {

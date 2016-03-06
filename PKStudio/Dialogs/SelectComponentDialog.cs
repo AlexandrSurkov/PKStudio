@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using PKStudio.TreeNodes;
 using System;
 using PKStudio.ItemWrappers;
+using PKStudio.Tree;
 
 namespace PKStudio.Dialogs
 {
@@ -26,6 +27,38 @@ namespace PKStudio.Dialogs
         ComponentWrapper selectedComponent;
 
         private LibFilter _libraryFilter;
+
+        public SelectComponentDialog(ComponentTypeWrapper componentType)
+        {
+            InitializeComponent();
+            switch (componentType)
+            {
+                case ComponentTypeWrapper.Library:
+                    break;
+                case ComponentTypeWrapper.Feature:
+                    break;
+                case ComponentTypeWrapper.MFAssembly:
+                    break;
+                case ComponentTypeWrapper.MFSolution:
+                    break;
+                case ComponentTypeWrapper.Processor:
+                    break;
+                case ComponentTypeWrapper.OperatingSystem:
+                    break;
+                case ComponentTypeWrapper.BuildTool:
+                    break;
+                case ComponentTypeWrapper.ISA:
+                    break;
+                case ComponentTypeWrapper.BuildParameter:
+                    break;
+                case ComponentTypeWrapper.LibraryCategory:
+                    break;
+                case ComponentTypeWrapper.Unknown:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public SelectComponentDialog(
             bool Library,
@@ -111,165 +144,171 @@ namespace PKStudio.Dialogs
 
         private void ShowLibraries()
         {
-            //Groups Dictionary
-            SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
-            SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
+            _treeView.SetModel(InventoryBrowserModel.LibrariesModel, false);
+
+            ////Groups Dictionary
+            //SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
+            //SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
 
 
-            treeView1.Nodes.Clear();
+            //treeView1.Nodes.Clear();
 
-            LibraryWrapper[] libarr = PK.Wrapper.GetLibraries();
+            //LibraryWrapper[] libarr = PK.Wrapper.GetLibraries();
 
-            foreach (LibraryWrapper lib in libarr)
-            {
-                LibraryWrapper CurrentLib = null;
-                if (this.LibraryFilter.IsStub)
-                {
-                    if (lib.IsStub)
-                    {
-                        CurrentLib = lib;
-                    }
-                }
-                else CurrentLib = lib;
+            //foreach (LibraryWrapper lib in libarr)
+            //{
+            //    LibraryWrapper CurrentLib = null;
+            //    if (this.LibraryFilter.IsStub)
+            //    {
+            //        if (lib.IsStub)
+            //        {
+            //            CurrentLib = lib;
+            //        }
+            //    }
+            //    else CurrentLib = lib;
 
-                if (CurrentLib != null)
-                {
-                    MFTreeNodeBase LibNode = new MFLibraryTreeNode(CurrentLib);//new MFTreeNodeBase(CurrentLib.Name);
+            //    if (CurrentLib != null)
+            //    {
+            //        MFTreeNodeBase LibNode = new MFLibraryTreeNode(CurrentLib);//new MFTreeNodeBase(CurrentLib.Name);
 
-                    if (!string.IsNullOrEmpty(CurrentLib.Groups))
-                    {
-                        if (!GroupsDict.ContainsKey(CurrentLib.Groups))
-                        {
-                            MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(CurrentLib.Groups);//new MFTreeNodeBase(CurrentLib.Groups);
-                            GroupNode.Nodes.Add(LibNode);
-                            GroupsDict.Add(CurrentLib.Groups, GroupNode);
-                        }
-                        else
-                        {
-                            GroupsDict[CurrentLib.Groups].Nodes.Add(LibNode);
-                        }
-                    }
-                    else
-                    {
-                        //LibraryCategoriesNode.Nodes.Add(CatNode);                    
-                        VoidGroupsList.Add(LibNode.Text, LibNode);
-                    }
-                }
-            }
+            //        if (!string.IsNullOrEmpty(CurrentLib.Groups))
+            //        {
+            //            if (!GroupsDict.ContainsKey(CurrentLib.Groups))
+            //            {
+            //                MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(CurrentLib.Groups);//new MFTreeNodeBase(CurrentLib.Groups);
+            //                GroupNode.Nodes.Add(LibNode);
+            //                GroupsDict.Add(CurrentLib.Groups, GroupNode);
+            //            }
+            //            else
+            //            {
+            //                GroupsDict[CurrentLib.Groups].Nodes.Add(LibNode);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            //LibraryCategoriesNode.Nodes.Add(CatNode);                    
+            //            VoidGroupsList.Add(LibNode.Text, LibNode);
+            //        }
+            //    }
+            //}
 
-            foreach (TreeNode tn in VoidGroupsList.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in VoidGroupsList.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
 
-            foreach (TreeNode tn in GroupsDict.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in GroupsDict.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
         }
 
         private void ShowLibraryCategories()
         {
-            //Groups dictionary
-            SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
-            SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
+            _treeView.SetModel(InventoryBrowserModel.LibraryCategoriesModel, false);
+
+            ////Groups dictionary
+            //SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
+            //SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
 
 
-            treeView1.Nodes.Clear();
+            //treeView1.Nodes.Clear();
 
-            LibraryCategoryWrapper[] libcatarr = PK.Wrapper.GetLibraryCategories();
+            //LibraryCategoryWrapper[] libcatarr = PK.Wrapper.GetLibraryCategories();
 
-            foreach (LibraryCategoryWrapper cat in libcatarr)
-            {
-                MFTreeNodeBase CatNode = new MFLibCatTreeNode(cat);//new MFTreeNodeBase(cat.Name);
+            //foreach (LibraryCategoryWrapper cat in libcatarr)
+            //{
+            //    MFTreeNodeBase CatNode = new MFLibCatTreeNode(cat);//new MFTreeNodeBase(cat.Name);
 
-                if (!string.IsNullOrEmpty(cat.Groups))
-                {
-                    if (!GroupsDict.ContainsKey(cat.Groups))
-                    {
-                        MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(cat.Groups);//new MFTreeNodeBase(cat.Groups);
-                        GroupNode.Nodes.Add(CatNode);
-                        GroupsDict.Add(cat.Groups, GroupNode);
-                    }
-                    else
-                    {
-                        GroupsDict[cat.Groups].Nodes.Add(CatNode);
-                    }
-                }
-                else
-                {
-                    //LibraryCategoriesNode.Nodes.Add(CatNode);                    
-                    VoidGroupsList.Add(CatNode.Text, CatNode);
-                }
-            }
+            //    if (!string.IsNullOrEmpty(cat.Groups))
+            //    {
+            //        if (!GroupsDict.ContainsKey(cat.Groups))
+            //        {
+            //            MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(cat.Groups);//new MFTreeNodeBase(cat.Groups);
+            //            GroupNode.Nodes.Add(CatNode);
+            //            GroupsDict.Add(cat.Groups, GroupNode);
+            //        }
+            //        else
+            //        {
+            //            GroupsDict[cat.Groups].Nodes.Add(CatNode);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        //LibraryCategoriesNode.Nodes.Add(CatNode);                    
+            //        VoidGroupsList.Add(CatNode.Text, CatNode);
+            //    }
+            //}
 
-            foreach (TreeNode tn in VoidGroupsList.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in VoidGroupsList.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
 
-            foreach (TreeNode tn in GroupsDict.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in GroupsDict.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
         }
 
         private void ShowFeatures()
         {
-            //Groups dictionary
-            SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
-            SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
+            _treeView.SetModel(InventoryBrowserModel.FeaturesModel, false);
+            ////Groups dictionary
+            //SortedDictionary<string, TreeNode> GroupsDict = new SortedDictionary<string, TreeNode>();
+            //SortedList<string, TreeNode> VoidGroupsList = new SortedList<string, TreeNode>();
 
 
-            treeView1.Nodes.Clear();
+            //treeView1.Nodes.Clear();
 
-            FeatureWrapper[] featarr = PK.Wrapper.GetFeatures();
+            //FeatureWrapper[] featarr = PK.Wrapper.GetFeatures();
 
-            foreach (FeatureWrapper feat in featarr)
-            {
-                MFTreeNodeBase FeatNode = new MFFeatureTreeNode(feat);//new MFTreeNodeBase(feat.Name);
+            //foreach (FeatureWrapper feat in featarr)
+            //{
+            //    MFTreeNodeBase FeatNode = new MFFeatureTreeNode(feat);//new MFTreeNodeBase(feat.Name);
 
-                if (!string.IsNullOrEmpty(feat.Groups))
-                {
-                    if (!GroupsDict.ContainsKey(feat.Groups))
-                    {
-                        MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(feat.Groups);//new MFTreeNodeBase(feat.Groups);
-                        GroupNode.Nodes.Add(FeatNode);
-                        GroupsDict.Add(feat.Groups, GroupNode);
-                    }
-                    else
-                    {
-                        GroupsDict[feat.Groups].Nodes.Add(FeatNode);
-                    }
-                }
-                else
-                {
-                    //LibraryCategoriesNode.Nodes.Add(CatNode);                    
-                    VoidGroupsList.Add(FeatNode.Text, FeatNode);
-                }
-            }
+            //    if (!string.IsNullOrEmpty(feat.Groups))
+            //    {
+            //        if (!GroupsDict.ContainsKey(feat.Groups))
+            //        {
+            //            MFTreeNodeBase GroupNode = new MFDirectoryTreeNode(feat.Groups);//new MFTreeNodeBase(feat.Groups);
+            //            GroupNode.Nodes.Add(FeatNode);
+            //            GroupsDict.Add(feat.Groups, GroupNode);
+            //        }
+            //        else
+            //        {
+            //            GroupsDict[feat.Groups].Nodes.Add(FeatNode);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        //LibraryCategoriesNode.Nodes.Add(CatNode);                    
+            //        VoidGroupsList.Add(FeatNode.Text, FeatNode);
+            //    }
+            //}
 
-            foreach (TreeNode tn in VoidGroupsList.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in VoidGroupsList.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
 
-            foreach (TreeNode tn in GroupsDict.Values)
-            {
-                treeView1.Nodes.Add(tn);
-            }
+            //foreach (TreeNode tn in GroupsDict.Values)
+            //{
+            //    treeView1.Nodes.Add(tn);
+            //}
         }
 
         private void ShowISAs()
         {
-            treeView1.Nodes.Clear();
+            _treeView.SetModel(InventoryBrowserModel.ISAModel, false);
+            //treeView1.Nodes.Clear();
 
-            ISAWrapper[] isaarr = PK.Wrapper.GetISAs();
-            foreach (ISAWrapper isa in isaarr)
-            {
-                MFTreeNodeBase ISANode = new MFISATreeNode(isa);//new MFTreeNodeBase(isa.Name);
-                treeView1.Nodes.Add(ISANode);
-            }
+            //ISAWrapper[] isaarr = PK.Wrapper.GetISAs();
+            //foreach (ISAWrapper isa in isaarr)
+            //{
+            //    MFTreeNodeBase ISANode = new MFISATreeNode(isa);//new MFTreeNodeBase(isa.Name);
+            //    treeView1.Nodes.Add(ISANode);
+            //}
         }
 
 
@@ -281,64 +320,64 @@ namespace PKStudio.Dialogs
 
         private void SelectComponent()
         {
-            if (treeView1.SelectedNode != null)
-            {
-                Type nodeType = treeView1.SelectedNode.GetType();
+            //if (treeView1.SelectedNode != null)
+            //{
+            //    Type nodeType = treeView1.SelectedNode.GetType();
 
-                if (nodeType == typeof(MFLibCatTreeNode))
-                {
-                    LibraryCategoryWrapper[] lcs = PK.Wrapper.GetLibraryCategories();
-                    foreach (LibraryCategoryWrapper lc in lcs)
-                    {
-                        if (lc.Name == treeView1.SelectedNode.Text)
-                        {
-                            this.selectedComponent = ComponentWrapper.GetComponentWrapper(lc);
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            return;
-                        }
-                    }
-                }
-                else if (nodeType == typeof(MFLibraryTreeNode))
-                {
-                    LibraryWrapper[] ls = PK.Wrapper.GetLibraries();
-                    foreach (LibraryWrapper l in ls)
-                    {
-                        if (l.Name == treeView1.SelectedNode.Text)
-                        {
-                            this.selectedComponent = ComponentWrapper.GetComponentWrapper(l);
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            return;
-                        }
-                    }
-                }
-                else if (nodeType == typeof(MFFeatureTreeNode))
-                {
-                    FeatureWrapper[] fs = PK.Wrapper.GetFeatures();
-                    foreach (FeatureWrapper f in fs)
-                    {
-                        if (f.Name == treeView1.SelectedNode.Text)
-                        {
-                            this.selectedComponent = ComponentWrapper.GetComponentWrapper(f);
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            return;
-                        }
-                    }
-                }
-                else if (nodeType == typeof(MFISATreeNode))
-                {
-                    ISAWrapper[] isas = PK.Wrapper.GetISAs();
-                    foreach (ISAWrapper i in isas)
-                    {
-                        if (i.Name == treeView1.SelectedNode.Text)
-                        {
-                            this.selectedComponent = ComponentWrapper.GetComponentWrapper(i);
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            return;
-                        }
-                    }
-                }
+            //    if (nodeType == typeof(MFLibCatTreeNode))
+            //    {
+            //        LibraryCategoryWrapper[] lcs = PK.Wrapper.GetLibraryCategories();
+            //        foreach (LibraryCategoryWrapper lc in lcs)
+            //        {
+            //            if (lc.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                this.selectedComponent = ComponentWrapper.GetComponentWrapper(lc);
+            //                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    else if (nodeType == typeof(MFLibraryTreeNode))
+            //    {
+            //        LibraryWrapper[] ls = PK.Wrapper.GetLibraries();
+            //        foreach (LibraryWrapper l in ls)
+            //        {
+            //            if (l.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                this.selectedComponent = ComponentWrapper.GetComponentWrapper(l);
+            //                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    else if (nodeType == typeof(MFFeatureTreeNode))
+            //    {
+            //        FeatureWrapper[] fs = PK.Wrapper.GetFeatures();
+            //        foreach (FeatureWrapper f in fs)
+            //        {
+            //            if (f.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                this.selectedComponent = ComponentWrapper.GetComponentWrapper(f);
+            //                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            //                return;
+            //            }
+            //        }
+            //    }
+            //    else if (nodeType == typeof(MFISATreeNode))
+            //    {
+            //        ISAWrapper[] isas = PK.Wrapper.GetISAs();
+            //        foreach (ISAWrapper i in isas)
+            //        {
+            //            if (i.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                this.selectedComponent = ComponentWrapper.GetComponentWrapper(i);
+            //                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            //                return;
+            //            }
+            //        }
+            //    }
 
-            }
+            //}
         }
 
         private void OkBtn_Click(object sender, System.EventArgs e)
@@ -349,118 +388,118 @@ namespace PKStudio.Dialogs
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            DescriptionRTB.Clear();
-            if (treeView1.SelectedNode != null)
-            {
-                Type nodeType = treeView1.SelectedNode.GetType();
+            //DescriptionRTB.Clear();
+            //if (treeView1.SelectedNode != null)
+            //{
+            //    Type nodeType = treeView1.SelectedNode.GetType();
 
-                if ((nodeType == typeof(MFLibCatTreeNode) ) ||
-                    (nodeType == typeof(MFLibraryTreeNode)) ||
-                    (nodeType == typeof(MFFeatureTreeNode)) ||
-                    (nodeType == typeof(MFISATreeNode)))
+            //    if ((nodeType == typeof(MFLibCatTreeNode) ) ||
+            //        (nodeType == typeof(MFLibraryTreeNode)) ||
+            //        (nodeType == typeof(MFFeatureTreeNode)) ||
+            //        (nodeType == typeof(MFISATreeNode)))
                     
-                {
-                    ShowDescription((ComponentTypeWrapper)TypeCb.SelectedItem);
-                        OkBtn.Enabled = true;
-                }
+            //    {
+            //        ShowDescription((ComponentTypeWrapper)TypeCb.SelectedItem);
+            //            OkBtn.Enabled = true;
+            //    }
 
-            }
-            else OkBtn.Enabled = false;
+            //}
+            //else OkBtn.Enabled = false;
         }
 
         private void ShowDescription(ComponentTypeWrapper type)
         {
-            DescriptionRTB.Clear();
+            //DescriptionRTB.Clear();
 
-            switch (type)
-            {
-                case ComponentTypeWrapper.Library:
-                    LibraryWrapper[] libs = PK.Wrapper.GetLibraries();
-                    foreach (LibraryWrapper l in libs)
-                    {
-                        if (l.Name == treeView1.SelectedNode.Text)
-                        {
-                            DescriptionRTB.AppendText("Name            : " + l.Name + "\r\n");
-                            DescriptionRTB.AppendText("Groups          : " + l.Groups + "\r\n");
-                            DescriptionRTB.AppendText("Description     : " + l.Description + "\r\n");
-                            DescriptionRTB.AppendText("Documentation   : " + l.Documentation + "\r\n");
-                            DescriptionRTB.AppendText("ProjectPath     : " + l.ProjectPath + "\r\n");
-                            DescriptionRTB.AppendText("Guid            : " + l.Guid.ToString() + "\r\n");
-                        }
-                    }
-                    break;
-                case ComponentTypeWrapper.Feature:
-                    FeatureWrapper[] fs = PK.Wrapper.GetFeatures();
-                    foreach (FeatureWrapper f in fs)
-                    {
-                        if (f.Name == treeView1.SelectedNode.Text)
-                        {
-                            DescriptionRTB.AppendText("Name            : " + f.Name + "\r\n");
-                            DescriptionRTB.AppendText("Groups          : " + f.Groups + "\r\n");
-                            DescriptionRTB.AppendText("Description     : " + f.Description + "\r\n");
-                            DescriptionRTB.AppendText("Documentation   : " + f.Documentation + "\r\n");
-                            DescriptionRTB.AppendText("ProjectPath     : " + f.ProjectPath + "\r\n");
-                            DescriptionRTB.AppendText("Guid            : " + f.Guid.ToString() + "\r\n");
-                        }
-                    }
-                    break;
-                case ComponentTypeWrapper.MFAssembly:
-                    break;
-                case ComponentTypeWrapper.MFSolution:
-                    break;
-                case ComponentTypeWrapper.Processor:
-                    ProcessorWrapper[] procs = PK.Wrapper.GetProcessors();
-                    foreach (ProcessorWrapper p in procs)
-                    {
-                        if (p.Name == treeView1.SelectedNode.Text)
-                        {
-                            DescriptionRTB.AppendText("Name            : " + p.Name + "\r\n");
-                            DescriptionRTB.AppendText("Description     : " + p.Description + "\r\n");
-                            DescriptionRTB.AppendText("Documentation   : " + p.Documentation + "\r\n");
-                            DescriptionRTB.AppendText("ProjectPath     : " + p.ProjectPath + "\r\n");
-                            DescriptionRTB.AppendText("Guid            : " + p.Guid.ToString() + "\r\n");
-                        }
-                    }
-                    break;
-                case ComponentTypeWrapper.OperatingSystem:
-                    break;
-                case ComponentTypeWrapper.BuildTool:
-                    break;
-                case ComponentTypeWrapper.ISA:
-                    ISAWrapper[] isas = PK.Wrapper.GetISAs();
-                    foreach (ISAWrapper i in isas)
-                    {
-                        if (i.Name == treeView1.SelectedNode.Text)
-                        {
-                            DescriptionRTB.AppendText("Name            : " + i.Name + "\r\n");
-                            DescriptionRTB.AppendText("Description     : " + i.Description + "\r\n");
-                            DescriptionRTB.AppendText("Documentation   : " + i.Documentation + "\r\n");
-                            DescriptionRTB.AppendText("Guid            : " + i.Guid.ToString() + "\r\n");
-                        }
-                    }
-                    break;
-                case ComponentTypeWrapper.BuildParameter:
-                    break;
-                case ComponentTypeWrapper.LibraryCategory:
-                    LibraryCategoryWrapper[] libCats = PK.Wrapper.GetLibraryCategories();
-                    foreach (LibraryCategoryWrapper lc in libCats)
-                    {
-                        if (lc.Name == treeView1.SelectedNode.Text)
-                        {
-                            DescriptionRTB.AppendText("Name            : " + lc.Name + "\r\n");
-                            DescriptionRTB.AppendText("Groups          : " + lc.Groups + "\r\n");
-                            DescriptionRTB.AppendText("Description     : " + lc.Description + "\r\n");
-                            DescriptionRTB.AppendText("Documentation   : " + lc.Documentation + "\r\n");
-                            DescriptionRTB.AppendText("ProjectPath     : " + lc.ProjectPath + "\r\n");
-                            DescriptionRTB.AppendText("Guid            : " + lc.Guid.ToString() + "\r\n");
-                        }
-                    }
-                    break;
-                case ComponentTypeWrapper.Unknown:
-                    break;
-                default:
-                    break;
-            }
+            //switch (type)
+            //{
+            //    case ComponentTypeWrapper.Library:
+            //        LibraryWrapper[] libs = PK.Wrapper.GetLibraries();
+            //        foreach (LibraryWrapper l in libs)
+            //        {
+            //            if (l.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                DescriptionRTB.AppendText("Name            : " + l.Name + "\r\n");
+            //                DescriptionRTB.AppendText("Groups          : " + l.Groups + "\r\n");
+            //                DescriptionRTB.AppendText("Description     : " + l.Description + "\r\n");
+            //                DescriptionRTB.AppendText("Documentation   : " + l.Documentation + "\r\n");
+            //                DescriptionRTB.AppendText("ProjectPath     : " + l.ProjectPath + "\r\n");
+            //                DescriptionRTB.AppendText("Guid            : " + l.Guid.ToString() + "\r\n");
+            //            }
+            //        }
+            //        break;
+            //    case ComponentTypeWrapper.Feature:
+            //        FeatureWrapper[] fs = PK.Wrapper.GetFeatures();
+            //        foreach (FeatureWrapper f in fs)
+            //        {
+            //            if (f.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                DescriptionRTB.AppendText("Name            : " + f.Name + "\r\n");
+            //                DescriptionRTB.AppendText("Groups          : " + f.Groups + "\r\n");
+            //                DescriptionRTB.AppendText("Description     : " + f.Description + "\r\n");
+            //                DescriptionRTB.AppendText("Documentation   : " + f.Documentation + "\r\n");
+            //                DescriptionRTB.AppendText("ProjectPath     : " + f.ProjectPath + "\r\n");
+            //                DescriptionRTB.AppendText("Guid            : " + f.Guid.ToString() + "\r\n");
+            //            }
+            //        }
+            //        break;
+            //    case ComponentTypeWrapper.MFAssembly:
+            //        break;
+            //    case ComponentTypeWrapper.MFSolution:
+            //        break;
+            //    case ComponentTypeWrapper.Processor:
+            //        ProcessorWrapper[] procs = PK.Wrapper.GetProcessors();
+            //        foreach (ProcessorWrapper p in procs)
+            //        {
+            //            if (p.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                DescriptionRTB.AppendText("Name            : " + p.Name + "\r\n");
+            //                DescriptionRTB.AppendText("Description     : " + p.Description + "\r\n");
+            //                DescriptionRTB.AppendText("Documentation   : " + p.Documentation + "\r\n");
+            //                DescriptionRTB.AppendText("ProjectPath     : " + p.ProjectPath + "\r\n");
+            //                DescriptionRTB.AppendText("Guid            : " + p.Guid.ToString() + "\r\n");
+            //            }
+            //        }
+            //        break;
+            //    case ComponentTypeWrapper.OperatingSystem:
+            //        break;
+            //    case ComponentTypeWrapper.BuildTool:
+            //        break;
+            //    case ComponentTypeWrapper.ISA:
+            //        ISAWrapper[] isas = PK.Wrapper.GetISAs();
+            //        foreach (ISAWrapper i in isas)
+            //        {
+            //            if (i.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                DescriptionRTB.AppendText("Name            : " + i.Name + "\r\n");
+            //                DescriptionRTB.AppendText("Description     : " + i.Description + "\r\n");
+            //                DescriptionRTB.AppendText("Documentation   : " + i.Documentation + "\r\n");
+            //                DescriptionRTB.AppendText("Guid            : " + i.Guid.ToString() + "\r\n");
+            //            }
+            //        }
+            //        break;
+            //    case ComponentTypeWrapper.BuildParameter:
+            //        break;
+            //    case ComponentTypeWrapper.LibraryCategory:
+            //        LibraryCategoryWrapper[] libCats = PK.Wrapper.GetLibraryCategories();
+            //        foreach (LibraryCategoryWrapper lc in libCats)
+            //        {
+            //            if (lc.Name == treeView1.SelectedNode.Text)
+            //            {
+            //                DescriptionRTB.AppendText("Name            : " + lc.Name + "\r\n");
+            //                DescriptionRTB.AppendText("Groups          : " + lc.Groups + "\r\n");
+            //                DescriptionRTB.AppendText("Description     : " + lc.Description + "\r\n");
+            //                DescriptionRTB.AppendText("Documentation   : " + lc.Documentation + "\r\n");
+            //                DescriptionRTB.AppendText("ProjectPath     : " + lc.ProjectPath + "\r\n");
+            //                DescriptionRTB.AppendText("Guid            : " + lc.Guid.ToString() + "\r\n");
+            //            }
+            //        }
+            //        break;
+            //    case ComponentTypeWrapper.Unknown:
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         private void treeView1_MouseDoubleClick(object sender, MouseEventArgs e)

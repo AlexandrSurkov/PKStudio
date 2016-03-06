@@ -25,11 +25,11 @@ namespace PKStudio.Forms.Editors
             UpdateForm(LibCat);
         }
 
-        public override EditedComponentDescription EditedItemDesc
+        public override BaseWrapper EditComponent
         {
             get
             {
-                return new EditedComponentDescription() { Type = EditedComponentDescription.ComponentType.LibraryCategory, Name = LibCat.Name };
+                return this.LibraryCategory;
             }
         }
 
@@ -46,11 +46,11 @@ namespace PKStudio.Forms.Editors
             this.Pages.Clear();
 
             this.Pages.Add(new Editors.Pages.LibraryCategory.MainPage(LibCat));
-            this.Pages.Add(new Editors.Pages.LibraryCategory.DescriptionPage(LibCat));
-            this.Pages.Add(new Editors.Pages.LibraryCategory.DocumentationPage(LibCat));
+            this.Pages.Add(new Editors.Pages.DescriptionPage(LibCat));
+            this.Pages.Add(new Editors.Pages.DocumentationPage(LibCat));
             this.Pages.Add(new Editors.Pages.LibraryCategory.FlagsPage(LibCat));
             this.Pages.Add(new Editors.Pages.LibraryCategory.StubLibraryPage(LibCat));
-            this.Pages.Add(new Editors.Pages.LibraryCategory.FeatureAssociationsPage(LibCat));
+            this.Pages.Add(new Editors.Pages.LibraryCategory.FeatureAssocioationsPage(LibCat));
             this.Pages.Add(new Editors.Pages.LibraryCategory.TemplatesPage(LibCat));
             this.Pages.Add(new Editors.Pages.LibraryCategory.LibraryProjCachePage(LibCat));
 

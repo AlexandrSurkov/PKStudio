@@ -119,7 +119,6 @@
             this.ImportBtn.TabIndex = 2;
             this.ImportBtn.Text = "Import...";
             this.ImportBtn.UseVisualStyleBackColor = true;
-            this.ImportBtn.Visible = false;
             this.ImportBtn.Click += new System.EventHandler(this.ImportBtn_Click);
             // 
             // DetalesRTB

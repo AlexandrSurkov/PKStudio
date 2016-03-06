@@ -2,7 +2,7 @@
 using PKStudio.ItemWrappers;
 namespace PKStudio.Forms.Editors.Pages.Library
 {
-    public partial class MainPage : LibraryPageBase
+    public partial class MainPage : LibraryWrapperPageBase
     {
         public MainPage()
         {
@@ -31,25 +31,19 @@ namespace PKStudio.Forms.Editors.Pages.Library
             LevelCb.Items.Add(LibraryLevelWrapper.Support);
             LevelCb.SelectedItem = LibraryLevelWrapper.CLR;
 
+            this.NodeName = Strings.Main;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Main;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.Lib.Name = NameTb.Text + nameSuffixLbl.Text;
-            this.Lib.LibraryFile = Lib.Name + ".$(LIB_EXT)";
-            this.Lib.ManifestFile = Lib.Name + ".$(LIB_EXT).manifest";
-            this.Lib.Groups = GroupsCb.Text;
-            this.Lib.Level = (LibraryLevelWrapper)LevelCb.SelectedItem;
+            this.Wrapper.Name = NameTb.Text + nameSuffixLbl.Text;
+            this.Wrapper.LibraryFile = Wrapper.Name + ".$(LIB_EXT)";
+            this.Wrapper.ManifestFile = Wrapper.Name + ".$(LIB_EXT).manifest";
+            this.Wrapper.Groups = GroupsCb.Text;
+            this.Wrapper.Level = (LibraryLevelWrapper)LevelCb.SelectedItem;
             //this.Lib.ProjectPath = DirectoryTb.Text + "\\" + ProjNameTb.Text + projSuffixLbl.Text + ".proj";
             //this.Lib.IsStub = IsStubCb.Checked;
 
@@ -58,45 +52,45 @@ namespace PKStudio.Forms.Editors.Pages.Library
 
         protected override void RefreshControl()
         {
-            if (GroupsCb.Items.Contains(Lib.Groups)) GroupsCb.SelectedItem = Lib.Groups;
+            if (GroupsCb.Items.Contains(Wrapper.Groups)) GroupsCb.SelectedItem = Wrapper.Groups;
             else
             {
                 if (GroupsCb.Items.Count > 0) GroupsCb.SelectedIndex = 0;
             }
 
-            string name = Lib.Name;
-            string projname = Path.GetFileNameWithoutExtension(Lib.ProjectPath);
+            string name = Wrapper.Name;
+            string projname = Path.GetFileNameWithoutExtension(Wrapper.ProjectPath);
 
-            if (Lib.Name.Contains("test") && projname.Contains("_test"))
+            if (Wrapper.Name.Contains("test") && projname.Contains("_test"))
             {
                 TestCb.Checked = true;
             }
             else TestCb.Checked = false;
 
-            IsStubCb.Checked = Lib.IsStub;
+            IsStubCb.Checked = Wrapper.IsStub;
 
-            if (Lib.Name.Contains("test"))
+            if (Wrapper.Name.Contains("test"))
             {
-                name = Lib.Name.Replace("test", "");
+                name = Wrapper.Name.Replace("test", "");
             }
-            else if (Lib.Name.Contains("_stub"))
+            else if (Wrapper.Name.Contains("_stub"))
             {
-                name = Lib.Name.Replace("_stub", "");
+                name = Wrapper.Name.Replace("_stub", "");
             }
-            else if (Lib.Name.Contains("_stubs"))
+            else if (Wrapper.Name.Contains("_stubs"))
             {
-                name = Lib.Name.Replace("_stubs", "");
+                name = Wrapper.Name.Replace("_stubs", "");
             }
             else
             {
-                name = Lib.Name;
+                name = Wrapper.Name;
             }
 
             NameTb.Text = name;
 
-            LevelCb.SelectedItem = Lib.Level;
+            LevelCb.SelectedItem = Wrapper.Level;
 
-            DirectoryTb.Text = Path.GetDirectoryName(Lib.ProjectPath);
+            DirectoryTb.Text = Path.GetDirectoryName(Wrapper.ProjectPath);
 
             if (projname.Contains("_test"))
             {

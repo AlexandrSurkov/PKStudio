@@ -8,33 +8,26 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
             : base(LibCat)
         {
             InitializeComponent();
-
+            this.NodeName = Strings.Flags;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Flags;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.LibCat.IgnoreDefaultLibPath = IgnoreDefaultLibPathCheckBox.Checked;
-            this.LibCat.IsTransport = IsTransportCheckBox.Checked;
-            this.LibCat.Required = RequiredCheckBox.Checked;
+            this.Wrapper.IgnoreDefaultLibPath = IgnoreDefaultLibPathCheckBox.Checked;
+            this.Wrapper.IsTransport = IsTransportCheckBox.Checked;
+            this.Wrapper.Required = RequiredCheckBox.Checked;
 
             return true;
         }
 
         protected override void RefreshControl()
         {
-            IgnoreDefaultLibPathCheckBox.Checked = this.LibCat.IgnoreDefaultLibPath;
-            IsTransportCheckBox.Checked = this.LibCat.IsTransport;
-            RequiredCheckBox.Checked = this.LibCat.Required;
+            IgnoreDefaultLibPathCheckBox.Checked = this.Wrapper.IgnoreDefaultLibPath;
+            IsTransportCheckBox.Checked = this.Wrapper.IsTransport;
+            RequiredCheckBox.Checked = this.Wrapper.Required;
         }
 
         #endregion

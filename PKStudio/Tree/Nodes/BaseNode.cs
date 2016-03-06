@@ -27,6 +27,41 @@ namespace PKStudio.Tree.Nodes
         [Browsable(false)]
         public InventoryBrowserModel Model { get; set; }
 
+        protected static Image GetIcon(ComponentWrapper content)
+        {
+            Image icon = null;
+            switch (content.ComponentType)
+            {
+                case ComponentTypeWrapper.Library:
+                    icon = PKStudio.Tree.Resources.LibraryComponent;
+                    break;
+                case ComponentTypeWrapper.Feature:
+                    icon = PKStudio.Tree.Resources.FeatureComponent;
+                    break;
+                case ComponentTypeWrapper.MFAssembly:
+                    icon = PKStudio.Tree.Resources.Assembly;
+                    break;
+                case ComponentTypeWrapper.MFSolution:
+                    icon = PKStudio.Tree.Resources.Solution;
+                    break;
+                case ComponentTypeWrapper.Processor:
+                    icon = PKStudio.Tree.Resources.Processor;
+                    break;
+                case ComponentTypeWrapper.LibraryCategory:
+                    icon = PKStudio.Tree.Resources.LibraryCategoryComponent;
+                    break;
+                case ComponentTypeWrapper.Unknown:
+                default:
+                    if (content.InnerComponentType == typeof(ProjectWrapper))
+                        icon = PKStudio.Tree.Resources.Project;
+                    else
+                        icon = PKStudio.Tree.Resources.unknown;
+                    break;
+            }
+            return icon;
+        }
+
+        
         public static readonly OnAddItemHandler OnItemDefault = (x) => true;
 
         public void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -360,6 +395,7 @@ namespace PKStudio.Tree.Nodes
 
     public abstract class BaseContentInventoryNode : BaseNode
     {
+        
         [Browsable(false)]
         public bool Checked
         {
@@ -395,40 +431,6 @@ namespace PKStudio.Tree.Nodes
 
     public class BaseInventoryNode<T> : BaseContentInventoryNode where T : BaseWrapper
     {
-
-        protected static Image GetIcon(ComponentWrapper content)
-        {
-            Image icon = null;
-            switch (content.ComponentType)
-            {
-                case ComponentTypeWrapper.Library:
-                    icon = PKStudio.Tree.Resources.LibraryComponent;
-                    break;
-                case ComponentTypeWrapper.Feature:
-                    icon = PKStudio.Tree.Resources.Feature;
-                    break;
-                case ComponentTypeWrapper.MFAssembly:
-                    icon = PKStudio.Tree.Resources.Assembly;
-                    break;
-                case ComponentTypeWrapper.MFSolution:
-                    icon = PKStudio.Tree.Resources.Solution;
-                    break;
-                case ComponentTypeWrapper.Processor:
-                    icon = PKStudio.Tree.Resources.Processor;
-                    break;
-                case ComponentTypeWrapper.LibraryCategory:
-                    icon = PKStudio.Tree.Resources.LibraryCategory;
-                    break;
-                case ComponentTypeWrapper.Unknown:
-                default:
-                    if (content.InnerComponentType == typeof(ProjectWrapper))
-                        icon = PKStudio.Tree.Resources.Project;
-                    else
-                        icon = PKStudio.Tree.Resources.unknown;
-                    break;
-            }
-            return icon;
-        }
 
         public T TypedContent
         {
@@ -472,11 +474,7 @@ namespace PKStudio.Tree.Nodes
             return PK.Wrapper.ExpandPath(path);
         }
 
-        private string ExpandName(string name, string path)
-        {
-            return PK.Wrapper.ExpandVars(name, path);
-        }
-  
+ 
     }
 
     public class LibraryNode : BaseInventoryNode<LibraryWrapper>
@@ -525,6 +523,10 @@ namespace PKStudio.Tree.Nodes
         public SolutionNode(SolutionWrapper content, BaseNode parent)
             : base(content, parent, Resources.Solution)
         {
+            foreach (PropertyWrapper prop in this.TypedContent.Properties)
+            {
+                Environment.SetEnvironmentVariable(prop.Name, prop.Value);
+            }
         }
 
         public override bool OnGetToolStripItems(ref List<ToolStripItem> items, EventHandler onClick)
@@ -596,6 +598,7 @@ namespace PKStudio.Tree.Nodes
         public ProjectNode(ProjectWrapper content, BaseNode parent)
             : base(content, parent, Resources.Project)
         {
+
         }
         public override Collection<BaseNode> GetChildren(TreePath treePath)
         {
@@ -607,13 +610,15 @@ namespace PKStudio.Tree.Nodes
             //items.Add(new FolderNode("Library Categories", this, this.GetLibraryCategories(), Resources.CompFolder));
             items.Add(new FolderNode("Libraries", this, this.GetLibraries(), Resources.CompFolder));
             items.Add(new FileFolderNode("Source Files", this, this.TypedContent.SourceFiles, this.TypedContent.ProjectPath));
+            items.Add(new FileFolderNode("Other Files", this, this.TypedContent.OtherFiles, this.TypedContent.ProjectPath));
             
             //List<string> filenames = new List<string>();
             
             //items.AddRange(AddFiles(ref filenames, this.TypedContent.SourceFiles, this.TypedContent.ProjectPath));
             
             //items.AddRange(AddFiles(ref filenames, this.TypedContent.OtherFiles, this.TypedContent.ProjectPath));
-            //items.Add(new BuildFileNode(this.TypedContent.ScatterFile, this, this.TypedContent.ProjectPath));
+            if (this.TypedContent.ScatterFile != null)
+                items.Add(new BuildFileNode(this.TypedContent.ScatterFile, this, this.TypedContent.ProjectPath));
             return new Collection<BaseNode>(items);
         }
 
@@ -740,7 +745,7 @@ namespace PKStudio.Tree.Nodes
                 this.Icon = Resources.missing;
             }
             this.TypedContent.FullPath = fullPath;
-
+            this.Name = Path.GetFileName(fullPath);
         }
     }
 
@@ -817,6 +822,7 @@ namespace PKStudio.Tree.Nodes
     {
         [Browsable(false)]
         public OnAddItemHandler OnAddItem { get; private set; }
+
 
         public ComponentNode(ComponentWrapper content, BaseNode parent)
             : this(content, parent, BaseNode.OnItemDefault)

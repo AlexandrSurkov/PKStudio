@@ -14,6 +14,7 @@ using PKStudio.ItemWrappers;
 using Microsoft.Build.Framework;
 using PKStudio.Helpers;
 using System.Diagnostics;
+using PKStudio.Forms.BaseForms;
 
 namespace PKStudio
 {
@@ -142,17 +143,15 @@ namespace PKStudio
 
             foreach (Forms.BaseForms.BasePKInventoryForm explorer in mExplorersList)
             {
-                explorer.ShowPropertiesEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnShowPropertiesEvent);
-                explorer.EditEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnEditEvent);
                 explorer.GenerateEvent += new EventHandler<Forms.BaseForms.GenerateEventArgs>(OnGenerateEvent);
-                explorer.SelectionChangedEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnSelectionChangedEvent);
-                explorer.ShowReferencesDiagramEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnShowReferencesDiagramEvent);
                 explorer.OpenContainingFolderEvent += new EventHandler<Forms.BaseForms.PathEventArgs>(explorer_OpenContainingFolderEvent);
                 explorer.WrapperActionEvent += new EventHandler<Forms.BaseForms.WrapperActionArgs>(explorer_WrapperActionEvent);
+                RegisterEventComponent(explorer);
             }
 
             mEditorsController = new Helpers.EditorsFormsController(dockPanel1);
 
+            this.mEditorsController.ShowEditorEvent += new EditorsFormsController.ShowEditorEventHandler(mEditorsController_ShowEditorEvent);
 
             //mLibraryCategoryEditor = new Forms.Editors.LibraryCategoryEditor();
             //mLibraryEditor = new Forms.Editors.LibraryEditor();
@@ -173,6 +172,22 @@ namespace PKStudio
 
             uVisionProjectGenerationToolStripMenuItem.Visible = false;
 
+        }
+
+        void mEditorsController_ShowEditorEvent(object sender, EditorsFormsController.ShowEditorEditorEventArgs e)
+        {
+            this.RegisterEventComponent(e.Editor);
+        }
+
+        void RegisterEventComponent(IEventComponent component)
+        {
+            if (component != null)
+            {
+                component.ShowPropertiesEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnShowPropertiesEvent);
+                component.EditEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnEditEvent);
+                component.SelectionChangedEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnSelectionChangedEvent);
+                component.ShowReferencesDiagramEvent += new EventHandler<Forms.BaseForms.ObjectEventArgs>(OnShowReferencesDiagramEvent);
+            }
         }
 
         void explorer_WrapperActionEvent(object sender, Forms.BaseForms.WrapperActionArgs e)
@@ -250,6 +265,7 @@ namespace PKStudio
             BuildTypeCB.Items.Add("Debug");
             BuildTypeCB.Items.Add("Release");
             BuildTypeCB.Items.Add("RTM");
+            BuildTypeCB.Items.Add("Instrumented");
             BuildTypeCB.SelectedIndex = 0;
             BuildTypeCB.Visible = true;
 
@@ -403,9 +419,9 @@ namespace PKStudio
                 ComponentWrapper comp = (ComponentWrapper)e.Object;
                 OpenComponentEditor(comp);
             }
-            else if (e.Object is PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)
+            else if (e.Object is PortingKitWrapper.SearchResultsHolder.SearchComponentDescriptor)
             {
-                PortingKitWrapper.SearchResultsHolder.ComponentDescriptor compDesc = (PortingKitWrapper.SearchResultsHolder.ComponentDescriptor)e.Object;
+                PortingKitWrapper.SearchResultsHolder.SearchComponentDescriptor compDesc = (PortingKitWrapper.SearchResultsHolder.SearchComponentDescriptor)e.Object;
 
                 if (compDesc.File != null)
                 {
@@ -649,7 +665,7 @@ namespace PKStudio
             {
                 using (PKStudio.Dialogs.SaveChangesDialog SCDlg = new Dialogs.SaveChangesDialog())
                 {
-                    DialogResult res = SCDlg.ShowDialog(this, mEditorsController.ModifiedEditorsList);
+                    DialogResult res = SCDlg.ShowDialog(this, mEditorsController.ModifiedComponents);
 
                     switch (res)
                     {

@@ -10,7 +10,7 @@ namespace PKStudio.ItemWrappers
 {
     [Serializable]
     [DefaultProperty("Name")]
-    public class LibraryCategoryWrapper : BaseTypedWrapper<LibraryCategory>, IName, IGroups, IGuid, IVersion, IProjectPath
+    public class LibraryCategoryWrapper : BaseTypedWrapper<LibraryCategory>, IName, IGroups, IGuid, IVersion, IProjectPath, IDescription, IDocumentation
     {
         private LibraryCategoryWrapper(LibraryCategory libCat)
             :base(libCat)

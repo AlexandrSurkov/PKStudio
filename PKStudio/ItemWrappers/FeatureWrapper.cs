@@ -53,7 +53,7 @@ namespace PKStudio.ItemWrappers
 
 
     [Serializable]
-    public class FeatureWrapper : BaseTypedWrapper<Feature>, IGroups, IGuid, IName, IProjectPath
+    public class FeatureWrapper : BaseTypedWrapper<Feature>, IGroups, IGuid, IName, IProjectPath, IDescription, IDocumentation, IFilter
     {
 
         public CollectionWrapper<ComponentWrapper, MFComponent> ReferencedBy(bool onlyChecked)

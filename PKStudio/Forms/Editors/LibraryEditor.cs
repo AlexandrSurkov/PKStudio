@@ -35,9 +35,9 @@ namespace PKStudio.Forms.Editors
             this.Pages.Clear();
 
             this.Pages.Add(new Editors.Pages.Library.MainPage(Lib));
-            this.Pages.Add(new Editors.Pages.Library.DescriptionPage(Lib));
-            this.Pages.Add(new Editors.Pages.Library.DocumentationPage(Lib));
-            this.Pages.Add(new Editors.Pages.Library.DependenciesPage(Lib));
+            this.Pages.Add(new Editors.Pages.DescriptionPage(Lib));
+            this.Pages.Add(new Editors.Pages.DocumentationPage(Lib));
+            this.Pages.Add(new Editors.Pages.Library.LibraryDependenciesPage(Lib));
             this.Pages.Add(new Editors.Pages.Library.LibraryCategoryPage(Lib));
             this.Pages.Add(new Editors.Pages.Library.ISASpecificPage(Lib));
             this.Pages.Add(new Editors.Pages.Library.ProcessorSpecificPage(Lib));
@@ -55,11 +55,11 @@ namespace PKStudio.Forms.Editors
 
         public LibraryWrapper Library { get { return this.Lib;} }
 
-        public override EditedComponentDescription EditedItemDesc
+        public override BaseWrapper EditComponent
         {
             get
             {
-                return new EditedComponentDescription() { Type = EditedComponentDescription.ComponentType.Library, Name = Lib.Name };
+                return this.Library;
             }
         }
 

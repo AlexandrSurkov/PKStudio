@@ -8,29 +8,22 @@ namespace PKStudio.Forms.Editors.Pages.Feature
             : base(Feat)
         {
             InitializeComponent();
-
+            this.NodeName = Strings.Filter;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Filter;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.Feat.Filter = FilterRtb.Text;
+            this.Wrapper.Filter = FilterRtb.Text;
 
             return true;
         }
 
         protected override void RefreshControl()
         {
-            FilterRtb.Text = this.Feat.Filter;
+            FilterRtb.Text = this.Wrapper.Filter;
         }
 
         #endregion

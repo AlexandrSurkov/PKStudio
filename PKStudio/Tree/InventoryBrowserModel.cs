@@ -44,6 +44,12 @@ namespace PKStudio.Tree
             return new RootNode(owner, "Assemblies", PK.Wrapper.GetAssembies(), Resources.Assembly);
         }
 
+        private static RootNode GetISARoot(InventoryBrowserModel owner)
+        {
+            return new RootNode(owner, "ISAs", PK.Wrapper.GetISAs());
+        }
+
+
         public static InventoryBrowserModel GetModel(CollectionWrapper<ComponentDescriptorWrapper, MFComponentDescriptor> components)
         {
             InventoryBrowserModel model = new InventoryBrowserModel();
@@ -108,7 +114,17 @@ namespace PKStudio.Tree
         }
 
        
-        public static InventoryBrowserModel GetModel(CollectionWrapper<ComponentWrapper, MFComponent> components)
+        //public static InventoryBrowserModel GetModel(CollectionWrapper<ComponentWrapper, MFComponent> components)
+        //{
+        //    InventoryBrowserModel model = new InventoryBrowserModel();
+        //    foreach (ComponentWrapper component in components)
+        //    {
+        //        model.Roots.Add(new ComponentNode(component, null));
+        //    }
+        //    return model;
+        //}
+
+        public static InventoryBrowserModel GetModel(Collection<ComponentWrapper> components)
         {
             InventoryBrowserModel model = new InventoryBrowserModel();
             foreach (ComponentWrapper component in components)
@@ -118,13 +134,20 @@ namespace PKStudio.Tree
             return model;
         }
 
-
-        public static InventoryBrowserModel GetModel(Array components, OnAddItemHandler onAddItem, string root)
+        public static InventoryBrowserModel GetModel(ComponentWrapper component)
         {
             InventoryBrowserModel model = new InventoryBrowserModel();
-            model.Roots.Add(GetComponentsRoot(model, root, components, onAddItem));
+            model.Roots.Add(new ComponentNode(component, null));
             return model;
         }
+
+
+        //public static InventoryBrowserModel GetModel(Array components, OnAddItemHandler onAddItem, string root)
+        //{
+        //    InventoryBrowserModel model = new InventoryBrowserModel();
+        //    model.Roots.Add(GetComponentsRoot(model, root, components, onAddItem));
+        //    return model;
+        //}
 
         public static InventoryBrowserModel SolutionsNamesModel
         {
@@ -184,6 +207,17 @@ namespace PKStudio.Tree
             }
         }
 
+        public static InventoryBrowserModel ISAModel
+        {
+            get
+            {
+                InventoryBrowserModel model = new InventoryBrowserModel();
+                model.Roots.Add(GetISARoot(model));
+                return model;
+            }
+        }
+
+        
         private InventoryBrowserModel()
         {
             this.Roots = new List<BaseNode>();

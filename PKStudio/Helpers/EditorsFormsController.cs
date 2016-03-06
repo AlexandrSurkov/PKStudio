@@ -8,6 +8,7 @@ using PKStudio.Forms.Editors;
 using PKStudio.ItemWrappers;
 using System.Diagnostics;
 using PKStudio.Forms.BaseForms;
+using System.Collections.ObjectModel;
 //using PKStudio.PKWrapper;
 
 namespace PKStudio.Helpers
@@ -113,13 +114,45 @@ namespace PKStudio.Helpers
                         )
                     {
                         PKStudio.Forms.BaseForms.EditorBaseForm editor = (PKStudio.Forms.BaseForms.EditorBaseForm)DockPanel.ActiveContent;
-                        res = editor.EditedItemDesc.Name;
+                        res = editor.EditComponent.InnerName;
                     }
                 }
                 return res;
             }
         }
 
+        public class ShowEditorEditorEventArgs : EventArgs
+        {
+            public ShowEditorEditorEventArgs(IEventComponent Editor)
+            {
+                this.Editor = Editor;
+            }
+            public IEventComponent Editor { get; private set; }
+        }
+
+        /// <summary>
+        /// Show Editor Event Handler
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e"></param>
+        public delegate void ShowEditorEventHandler(object sender, ShowEditorEditorEventArgs e);
+
+        /// <summary>
+        /// Raises after new Editor was shown
+        /// </summary>
+        public event ShowEditorEventHandler ShowEditorEvent;
+
+
+        void OnShowEditor(IEventComponent component)
+        {
+            if (component != null)
+            {
+                if (this.ShowEditorEvent != null)
+                {
+                    this.ShowEditorEvent(this, new ShowEditorEditorEventArgs(component));
+                }
+            }
+        }
 
         /// <summary>
         /// Ru: Загружает формы для редактирования из списка
@@ -231,11 +264,11 @@ namespace PKStudio.Helpers
         /// Returns list of modified forms names
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public List<PKStudio.Forms.BaseForms.EditorBaseForm.EditedComponentDescription> ModifiedEditorsList 
+        public Collection<BaseWrapper> ModifiedComponents
         {
             get
             {
-                List<PKStudio.Forms.BaseForms.EditorBaseForm.EditedComponentDescription> list = new List<PKStudio.Forms.BaseForms.EditorBaseForm.EditedComponentDescription>();
+                Collection<BaseWrapper> list = new Collection<BaseWrapper>();
 
                 foreach (DockContent item in DockPanel.Contents)
                 {
@@ -245,7 +278,7 @@ namespace PKStudio.Helpers
                         if (editor.Modified)
                         {
                             if (editor.Modified)
-                                list.Add(editor.EditedItemDesc);
+                                list.Add(editor.EditComponent);
                         }
                     }
 
@@ -255,7 +288,7 @@ namespace PKStudio.Helpers
             }
         }
 
-        protected void ShowLibraryEditorByGuid(string guid)
+        protected IEventComponent ShowLibraryEditorByGuid(string guid)
         {
             bool exist = false;
             foreach (DockContent item in DockPanel.Contents)
@@ -280,12 +313,13 @@ namespace PKStudio.Helpers
                     LE.OpenContainingFolderEvent +=new EventHandler<Forms.BaseForms.PathEventArgs>(OpenContainingFolderEvent);
                     LE.SetLib(lib);
                     LE.Show(DockPanel, DockState.Document);
+                    return LE;
                 }
             }
-
+            return null;
         }
 
-        protected void ShowFeatureEditorByGuid(string guid)
+        protected IEventComponent ShowFeatureEditorByGuid(string guid)
         {
             bool exist = false;
             foreach (DockContent item in DockPanel.Contents)
@@ -310,11 +344,13 @@ namespace PKStudio.Helpers
                     FE.OpenContainingFolderEvent += new EventHandler<Forms.BaseForms.PathEventArgs>(OpenContainingFolderEvent);
                     FE.SetFeat(feat);
                     FE.Show(DockPanel, DockState.Document);
+                    return FE;
                 }
             }
+            return null;
         }
 
-        protected void ShowLibraryCategoryEditorByGuid(string guid)
+        protected IEventComponent ShowLibraryCategoryEditorByGuid(string guid)
         {
             bool exist = false;
             foreach (DockContent item in DockPanel.Contents)
@@ -339,8 +375,10 @@ namespace PKStudio.Helpers
                     LCE.OpenContainingFolderEvent += new EventHandler<Forms.BaseForms.PathEventArgs>(OpenContainingFolderEvent);
                     LCE.SetLibCat(libcat);
                     LCE.Show(DockPanel, DockState.Document);
+                    return LCE;
                 }
             }
+            return null;
         }
 
         /// <summary>
@@ -350,20 +388,21 @@ namespace PKStudio.Helpers
         /// <param name="obj"></param>
         public void ShowEditor(object obj)
         {
+            IEventComponent component = null;
             if (obj is LibraryWrapper)
             {
                 LibraryWrapper library = (LibraryWrapper)obj;
-                ShowLibraryEditorByGuid(library.Guid);
+                component = ShowLibraryEditorByGuid(library.Guid);
             }
             else if (obj is FeatureWrapper)
             {
                 FeatureWrapper feature = (FeatureWrapper)obj;
-                ShowFeatureEditorByGuid(feature.Guid);
+                component = ShowFeatureEditorByGuid(feature.Guid);
             }
             else if (obj is LibraryCategoryWrapper)
             {
                 LibraryCategoryWrapper libcat = (LibraryCategoryWrapper)obj;
-                ShowLibraryCategoryEditorByGuid(libcat.Guid);
+                component = ShowLibraryCategoryEditorByGuid(libcat.Guid);
             }
             else if (obj is ComponentWrapper)
             {
@@ -371,13 +410,13 @@ namespace PKStudio.Helpers
                 switch (comp.ComponentType)
                 {
                     case ComponentTypeWrapper.Library:
-                        ShowLibraryEditorByGuid(comp.Guid);
+                        component = ShowLibraryEditorByGuid(comp.Guid);
                         break;
                     case ComponentTypeWrapper.Feature:
-                        ShowFeatureEditorByGuid(comp.Guid);
+                        component = ShowFeatureEditorByGuid(comp.Guid);
                         break;
                     case ComponentTypeWrapper.LibraryCategory:
-                        ShowLibraryCategoryEditorByGuid(comp.Guid);
+                        component = ShowLibraryCategoryEditorByGuid(comp.Guid);
                         break;
                     default:
                         break;
@@ -396,6 +435,7 @@ namespace PKStudio.Helpers
                 if (editor != null)
                     editor.GotoLine(file.Line - 1);
             }
+            OnShowEditor(component);
         }
 
         private SourceFileEditor OpenTextEditor(string Path)

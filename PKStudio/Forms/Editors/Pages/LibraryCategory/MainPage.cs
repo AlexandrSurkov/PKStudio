@@ -32,25 +32,19 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
             LevelCb.Items.Add(LibraryLevelWrapper.Support);
             LevelCb.SelectedItem = LibraryLevelWrapper.CLR;
 
+            this.NodeName = Strings.Main;
             HeaderLbl.Text = this.NodeName;
         }
 
         #region Override
 
-        public override string NodeName
-        {
-            get
-            {
-                return Strings.Main;
-            }
-        }
         public override bool OnApplyChanges()
         {
-            this.LibCat.Name = NameTb.Text + LevelLbl.Text;
+            this.Wrapper.Name = NameTb.Text + LevelLbl.Text;
 
-            this.LibCat.Groups = GroupsCb.Text;
+            this.Wrapper.Groups = GroupsCb.Text;
 
-            this.LibCat.Level = (LibraryLevelWrapper)LevelCb.SelectedItem;
+            this.Wrapper.Level = (LibraryLevelWrapper)LevelCb.SelectedItem;
 
             return true;
         }
@@ -58,36 +52,36 @@ namespace PKStudio.Forms.Editors.Pages.LibraryCategory
         protected override void RefreshControl()
         {
             string name = "";
-            if (LibCat.Name.Contains("_HAL"))
+            if (Wrapper.Name.Contains("_HAL"))
             {
-                name = LibCat.Name.Replace("_HAL", "");
+                name = Wrapper.Name.Replace("_HAL", "");
             }
-            else if (LibCat.Name.Contains("_PAL"))
+            else if (Wrapper.Name.Contains("_PAL"))
             {
-                name = LibCat.Name.Replace("_PAL", "");
+                name = Wrapper.Name.Replace("_PAL", "");
             }
-            else if (LibCat.Name.Contains("_CLR"))
+            else if (Wrapper.Name.Contains("_CLR"))
             {
-                name = LibCat.Name.Replace("_CLR", "");
+                name = Wrapper.Name.Replace("_CLR", "");
             }
-            else if (LibCat.Name.Contains("_Support"))
+            else if (Wrapper.Name.Contains("_Support"))
             {
-                name = LibCat.Name.Replace("_Support", "");
+                name = Wrapper.Name.Replace("_Support", "");
             }
             else
             {
-                name = LibCat.Name;
+                name = Wrapper.Name;
             }
 
             NameTb.Text = name;
 
-            if (GroupsCb.Items.Contains(LibCat.Groups)) GroupsCb.SelectedItem = LibCat.Groups;
+            if (GroupsCb.Items.Contains(Wrapper.Groups)) GroupsCb.SelectedItem = Wrapper.Groups;
             else
             {
                 if (GroupsCb.Items.Count > 0) GroupsCb.SelectedIndex = 0;
             }
 
-            LevelCb.SelectedItem = LibCat.Level;
+            LevelCb.SelectedItem = Wrapper.Level;
         }
 
         #endregion

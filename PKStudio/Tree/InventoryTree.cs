@@ -528,6 +528,14 @@ namespace PKStudio.Tree
         }
 
         #endregion
+
+        private void _treeView_NodeMouseDoubleClick(object sender, TreeNodeAdvMouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                OnEditEvent(this.SelectedObject);
+            }
+        }
     }
     public class SetSelectedNodeArgs : EventArgs
     {
