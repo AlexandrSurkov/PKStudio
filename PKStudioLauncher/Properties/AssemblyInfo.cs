@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PKStudioLauncher")]
-[assembly: AssemblyCopyright("Copyright © Surkov Alexandr and Kiselev Igor 2010-2011")]
+[assembly: AssemblyCopyright("Copyright © Surkov Alexandr and Kiselev Igor 2010-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
